@@ -20,9 +20,9 @@ WHITE = \033[1;49;97m
 NAME = a.out
 
 # Include
-HEADER	= ./
+HEADER = ./includes/vector.hpp
 
-SRCS	=	main.cpp
+SRCS =	./srcs/main.cpp
 
 CC = clang++
 
