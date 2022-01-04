@@ -20,9 +20,14 @@ WHITE = \033[1;49;97m
 NAME = a.out
 
 # Include
-HEADER = ./includes/vector.hpp
+I = ./includes/
+HEADER =	$(I)vector.hpp \
+			$(I)error.hpp \
+			$(I)all.hpp
 
-SRCS =	./srcs/main.cpp
+S = ./srcs/
+SRCS =	$(S)main.cpp \
+		$(S)test_vector.cpp
 
 CC = clang++
 
@@ -39,6 +44,9 @@ all:	$(NAME)
 $(NAME):	$(OBJS) $(HEADER)
 	@$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
 	@printf "\033[2K\r$(BLUE)$(NAME)$(RESET)$(BLUEE): $(ICONOK)Compiled [√]$(RESET)\n"
+
+start:
+		@make ; ./a.out
 
 clean:
 	@$(RM) $(OBJS)

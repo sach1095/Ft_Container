@@ -1,10 +1,6 @@
 #ifndef _VECTOR_HPP_
 #define _VECTOR_HPP_
 
-# include <iostream>
-# include <vector>
-# include <memory>
-
 namespace ft
 {
 	template < typename T, typename Allocator = std::allocator<T> >
@@ -17,7 +13,7 @@ namespace ft
 		Allocator	alloc;
 	public:
 
-		class OutOfLimitsAlocatedException: public std::exception
+		class OutOfLimitsAlocatedException : public std::exception
 		{
 			virtual const char* what() const throw()
 			{
@@ -50,9 +46,9 @@ namespace ft
 		size_t	capacity() { return (size_max_allocated); }
 		size_t	size() { return (size_max_construct); }
 
-		size_t at (size_t index)
+		int at (size_t index)
 		{
-			if (size() < index)
+			if (size() < index || size() == 0)
 				throw OutOfLimitsAlocatedException();
 			else
 				return (this->my_tab[index]);
@@ -104,13 +100,21 @@ namespace ft
 				size_max_construct++;
 			}
 		}
+
+		void pop_back()
+		{
+
+			alloc.destroy(&my_tab[size()]);
+			size_max_construct--;
+		}
+
+
+
 		~vector()
 		{
 			destroy_tab();
 		}
 	};
 }
-
-
 
 #endif
