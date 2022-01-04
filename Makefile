@@ -22,7 +22,6 @@ NAME = a.out
 # Include
 I = ./includes/
 HEADER =	$(I)vector.hpp \
-			$(I)error.hpp \
 			$(I)all.hpp
 
 S = ./srcs/
@@ -33,7 +32,7 @@ CC = clang++
 
 OBJS = $(SRCS:.cpp=.o)
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 
 all:	$(NAME)
 

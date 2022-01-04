@@ -56,11 +56,11 @@ namespace ft
 
 		void destroy_tab()
 		{
-			for (size_t i = 0; i < size(); i++)
+			for (size_t i = size_max_allocated; i > 0; i--)
 			{
-				alloc.destroy(&my_tab[i]);
+				alloc.destroy(my_tab + i);
 			}
-			alloc.deallocate(my_tab, capacity());
+			alloc.deallocate(my_tab, size_max_construct);
 			my_tab = NULL;
 		}
 
@@ -103,7 +103,6 @@ namespace ft
 
 		void pop_back()
 		{
-
 			alloc.destroy(&my_tab[size()]);
 			size_max_construct--;
 		}
