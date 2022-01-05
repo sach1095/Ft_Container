@@ -1,26 +1,39 @@
 # include "../includes/all.hpp"
 
+static bool check_equal(ft::vector<int, std::allocator<int> > &my_vector, std::vector<int, std::allocator<int> > &realvector)
+{
+	if (my_vector.capacity() != realvector.capacity())
+		return (FAIL);
+	else if (my_vector.size() != realvector.size())
+		return (FAIL);
+
+	for (size_t i = 0; i < realvector.size(); i++)
+	{
+		if (my_vector.at(i) != realvector.at(i))
+			return (FAIL);
+	}
+	return (SUCCESS);
+}
+
 /**********************************************************************************/
 /*** TEST 1 : *********************************************************************/
-/*** create vector no args and check capacity size and at index 0 *****************/
+/*** create vector no args and check capacity size and check stack ****************/
 /**********************************************************************************/
 static bool	test_v1()
 {
 	ft::vector<int, std::allocator<int> > my_vector;
 	std::vector<int, std::allocator<int> > realvector;
 
-	if (my_vector.capacity() != realvector.capacity())
-		return (FAIL);
-	else if (my_vector.size() != realvector.size())
+	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
 }
 
 
-/**********************************************************************************/
-/*** TEST 2 : *********************************************************************/
-/*** create vector no args push_back int 5 and check capacity size and at index 0 */
-/**********************************************************************************/
+/***********************************************************************************/
+/*** TEST 2 : **********************************************************************/
+/*** create vector no args push_back int 5 and check capacity size and check stack */
+/***********************************************************************************/
 static bool	test_v2()
 {
 	ft::vector<int, std::allocator<int> > my_vector;
@@ -30,19 +43,15 @@ static bool	test_v2()
 
 	realvector.push_back(5);
 
-	if (my_vector.capacity() != realvector.capacity())
-		return (FAIL);
-	else if (my_vector.size() != realvector.size())
-		return (FAIL);
-	else if (my_vector.at(0) != realvector.at(0))
+	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
 }
 
-/***********************************************************************************/
-/*** TEST 3 : **********************************************************************/
-/*** create vector no args push_back string and check capacity size and at index 0 */
-/***********************************************************************************/
+/************************************************************************************/
+/*** TEST 3 : ***********************************************************************/
+/*** create vector no args push_back 3 time and check capacity size and check stack */
+/************************************************************************************/
 static bool	test_v3()
 {
 	ft::vector<int, std::allocator<int> > my_vector;
@@ -56,15 +65,15 @@ static bool	test_v3()
 	realvector.push_back(2);
 	realvector.push_back(3);
 
-	if (my_vector.capacity() != realvector.capacity())
-		return (FAIL);
-	else if (my_vector.size() != realvector.size())
-		return (FAIL);
-	else if (my_vector.at(0) != realvector.at(0))
+	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
 }
 
+/************************************************************************************/
+/*** TEST 4 : ***********************************************************************/
+/*** create vector no args push_back 3 time and check capacity size and check stack */
+/************************************************************************************/
 static bool	test_v4()
 {
 	ft::vector<int, std::allocator<int> > my_vector;
@@ -81,11 +90,7 @@ static bool	test_v4()
 	realvector.pop_back();
 	realvector.push_back(5);
 
-	if (my_vector.capacity() != realvector.capacity())
-		return (FAIL);
-	else if (my_vector.size() != realvector.size())
-		return (FAIL);
-	else if (my_vector.at(0) != realvector.at(0))
+	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
 }
@@ -99,8 +104,8 @@ static bool	test_v5()
 
 bool ft_vector_test()
 {
-	std::cout << "------- Start Vector test -------\n" << std::endl;
-
+		std::cout << "\033[3;33m------- \033[3;34mStart \033[3;32mVector \033[3;35mTest \033[3;33m-------\033[0m\n" << std::endl;
+	/*------------------------------------ test v1 ------------------------------------*/
 	if (test_v1())
 	{
 		std::cout << "Test v1 : \033[1;31m[X]\033[0m" << std::endl;
@@ -109,6 +114,7 @@ bool ft_vector_test()
 	else
 		std::cout << "Test v1 : \033[1;32m[√]\033[0m" << std::endl;
 
+	/*------------------------------------ test v2 ------------------------------------*/
 	if (test_v2())
 	{
 		std::cout << "Test v2 : \033[1;31m[X]\033[0m" << std::endl;
@@ -116,6 +122,8 @@ bool ft_vector_test()
 	}
 	else
 		std::cout << "Test v2 : \033[1;32m[√]\033[0m" << std::endl;
+
+	/*------------------------------------ test v3 ------------------------------------*/
 	if (test_v3())
 	{
 		std::cout << "Test v3 : \033[1;31m[X]\033[0m" << std::endl;
@@ -123,6 +131,8 @@ bool ft_vector_test()
 	}
 	else
 		std::cout << "Test v3 : \033[1;32m[√]\033[0m" << std::endl;
+
+	/*------------------------------------ test v4 ------------------------------------*/
 	if (test_v4())
 	{
 		std::cout << "Test v4 : \033[1;31m[X]\033[0m" << std::endl;
@@ -130,6 +140,8 @@ bool ft_vector_test()
 	}
 	else
 		std::cout << "Test v4 : \033[1;32m[√]\033[0m" << std::endl;
+
+	/*------------------------------------ test v5 ------------------------------------*/
 	if (test_v5())
 	{
 		std::cout << "Test v5 : \033[1;31m[X]\033[0m" << std::endl;
@@ -137,6 +149,9 @@ bool ft_vector_test()
 	}
 	else
 		std::cout << "Test v5 : \033[1;32m[√]\033[0m" << std::endl;
-	std::cout << "End of vector test" << std::endl;
+
+	/*------------------------------------ End test ------------------------------------*/
+	std::cout << "\n\033[3;33m------- \033[3;34mEnd \033[3;32mVector \033[3;35mTest \033[3;33m-------\033[0m\n" << std::endl;
+
 	return (SUCCESS);
 }

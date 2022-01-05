@@ -43,10 +43,21 @@ namespace ft
 			}
 		};
 
+		vector &operator=(const vector &original_vector)
+		{
+			if (this == &original_vector)
+				return (*this);
+			my_tab = original_vector.my_tab;
+			size_max_allocated = original_vector.size_max_allocated;
+			size_max_construct = original_vector.size_max_construct;
+			alloc = original_vector.alloc;
+			return (*this);
+		}
+
 		size_t	capacity() { return (size_max_allocated); }
 		size_t	size() { return (size_max_construct); }
 
-		int at (size_t index)
+		int		at (size_t index)
 		{
 			if (size() < index || size() == 0)
 				throw OutOfLimitsAlocatedException();
@@ -54,7 +65,7 @@ namespace ft
 				return (this->my_tab[index]);
 		}
 
-		void destroy_tab()
+		void	destroy_tab()
 		{
 			for (size_t i = size_max_allocated; i > 0; i--)
 			{
@@ -86,7 +97,7 @@ namespace ft
 			my_tab = temp;
 		}
 
-		void push_back(T new_insert)
+		void	push_back(T new_insert)
 		{
 			if (capacity() > size())
 			{
@@ -101,12 +112,11 @@ namespace ft
 			}
 		}
 
-		void pop_back()
+		void	pop_back()
 		{
 			alloc.destroy(&my_tab[size()]);
 			size_max_construct--;
 		}
-
 
 
 		~vector()
