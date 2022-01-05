@@ -17,6 +17,8 @@
 # include <istream>
 # include <iomanip>
 
+struct input_iterator_tag {};
+
 # include "../includes/vector.hpp"
 
 bool	ft_vector_test();

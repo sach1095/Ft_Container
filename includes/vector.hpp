@@ -6,11 +6,18 @@ namespace ft
 	template < typename T, typename Allocator = std::allocator<T> >
 	class vector{
 
-	private:
+	protected:
 		T			*my_tab;
 		size_t		size_max_allocated;
 		size_t		size_max_construct;
 		Allocator	alloc;
+
+		typedef T value_type;
+		typedef value_type& reference;
+		typedef const value_type& const_reference;
+		typedef value_type*		pointer;
+		typedef value_type*	const_pointer;
+
 	public:
 
 		class OutOfLimitsAlocatedException : public std::exception
@@ -20,6 +27,10 @@ namespace ft
 				return ("Occurence not allocated");
 			}
 		};
+
+		/****************************************************************************************************************************/
+		/******************************************  Member functions ***************************************************************/
+		/****************************************************************************************************************************/
 		vector(Allocator alloc = Allocator()) : size_max_allocated(0), size_max_construct(0), alloc(alloc)
 		{
 			my_tab = NULL;
@@ -43,6 +54,11 @@ namespace ft
 			}
 		};
 
+		~vector()
+		{
+			destroy_tab();
+		}
+
 		vector &operator=(const vector &original_vector)
 		{
 			if (this == &original_vector)
@@ -54,8 +70,23 @@ namespace ft
 			return (*this);
 		}
 
-		size_t	capacity() { return (size_max_allocated); }
+		/****************************************************************************************************************************/
+		/******************************************  Iterators **********************************************************************/
+		/****************************************************************************************************************************/
+
+
+		/****************************************************************************************************************************/
+		/******************************************  Capacity ***********************************************************************/
+		/****************************************************************************************************************************/
 		size_t	size() { return (size_max_construct); }
+		size_t	max_size(){return (4611686018427387903);}
+		size_t	capacity() { return (size_max_allocated); }
+		bool	empty()
+		{
+			if (size_max_construct == 0)
+				return (true);
+			return (false);
+		}
 
 		int		at (size_t index)
 		{
@@ -97,6 +128,7 @@ namespace ft
 			my_tab = temp;
 		}
 
+
 		void	push_back(T new_insert)
 		{
 			if (capacity() > size())
@@ -119,10 +151,6 @@ namespace ft
 		}
 
 
-		~vector()
-		{
-			destroy_tab();
-		}
 	};
 }
 

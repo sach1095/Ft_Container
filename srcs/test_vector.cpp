@@ -95,10 +95,17 @@ static bool	test_v4()
 	return (SUCCESS);
 }
 
+/************************************************************************************/
+/*** TEST 5 : ***********************************************************************/
+/*** create vector no args check max_size function return ***************************/
+/************************************************************************************/
 static bool	test_v5()
 {
 	ft::vector<int, std::allocator<int> > my_vector;
 	std::vector<int, std::allocator<int> > realvector;
+
+	if (my_vector.max_size() != realvector.max_size() )
+		return (FAIL);
 	return (SUCCESS);
 }
 
@@ -149,6 +156,20 @@ bool ft_vector_test()
 	}
 	else
 		std::cout << "Test v5 : \033[1;32m[√]\033[0m" << std::endl;
+
+	std::vector<int> myvector (5);  // 5 default-constructed ints
+
+	 int i = 0;
+
+	 std::vector<int>::reverse_iterator rit = myvector.rbegin();
+	 for (; rit!= myvector.rend(); ++rit)
+	   *rit = ++i;
+
+	 std::cout << "myvector contains:";
+	 for (std::vector<int>::iterator it = myvector.begin(); it != myvector.end(); ++it)
+	   std::cout << ' ' << *it;
+	 std::cout << '\n';
+
 
 	/*------------------------------------ End test ------------------------------------*/
 	std::cout << "\n\033[3;33m------- \033[3;34mEnd \033[3;32mVector \033[3;35mTest \033[3;33m-------\033[0m\n" << std::endl;
