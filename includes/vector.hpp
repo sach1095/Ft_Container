@@ -8,8 +8,8 @@ namespace ft
 
 	protected:
 		T			*my_tab;
-		size_t		size_max_allocated;
-		size_t		size_max_construct;
+		size_t		capacity_size;
+		size_t		nb_element;
 		Allocator	alloc;
 
 		typedef T value_type;
@@ -31,12 +31,12 @@ namespace ft
 		/****************************************************************************************************************************/
 		/******************************************  Member functions ***************************************************************/
 		/****************************************************************************************************************************/
-		vector(Allocator alloc = Allocator()) : size_max_allocated(0), size_max_construct(0), alloc(alloc)
+		vector(Allocator alloc = Allocator()) : capacity_size(0), nb_element(0), alloc(alloc)
 		{
 			my_tab = NULL;
 		};
 
-		vector(size_t N, Allocator alloc = Allocator()) : size_max_allocated(N), size_max_construct(N), alloc(alloc)
+		vector(size_t N, Allocator alloc = Allocator()) : capacity_size(N), nb_element(N), alloc(alloc)
 		{
 			my_tab = alloc.allocate(N);
 			for (size_t i = 0; i < N; i++)
@@ -45,7 +45,7 @@ namespace ft
 			}
 		};
 
-		vector(size_t N, T element, Allocator alloc = Allocator()) : size_max_allocated(N), size_max_construct(N), alloc(alloc)
+		vector(size_t N, T element, Allocator alloc = Allocator()) : capacity_size(N), nb_element(N), alloc(alloc)
 		{
 			my_tab = alloc.allocate(N);
 			for (size_t i = 0; i < N; i++)
@@ -64,8 +64,8 @@ namespace ft
 			if (this == &original_vector)
 				return (*this);
 			my_tab = original_vector.my_tab;
-			size_max_allocated = original_vector.size_max_allocated;
-			size_max_construct = original_vector.size_max_construct;
+			capacity_size = original_vector.capacity_size;
+			nb_element = original_vector.nb_element;
 			alloc = original_vector.alloc;
 			return (*this);
 		}
@@ -78,46 +78,135 @@ namespace ft
 		/****************************************************************************************************************************/
 		/******************************************  Capacity ***********************************************************************/
 		/****************************************************************************************************************************/
-		size_t	size() { return (size_max_construct); }
+		size_t	size() { return (nb_element); }
 		size_t	max_size(){return (4611686018427387903);}
-		size_t	capacity() { return (size_max_allocated); }
+		size_t	capacity() { return (capacity_size); }
+
 		bool	empty()
 		{
-			if (size_max_construct == 0)
+			if (nb_element == 0)
 				return (true);
 			return (false);
 		}
 
-		int		at (size_t index)
+		void	reserve() {}
+		void	resize(size_t N, T value = T())
 		{
-			if (size() < index || size() == 0)
+			if (N < nb_element)
+			{
+				for (size_t i = N; i < nb_element; i++)
+				{
+					alloc.destroy(my_tab + i);
+				}
+				nb_element = N;
+			}
+			else if (N > nb_element)
+			{
+				for (size_t i = nb_element; i < N; i++)
+				{
+					push_back(value);
+				}
+			}
+		}
+
+		/****************************************************************************************************************************/
+		/******************************************  Element access *****************************************************************/
+		/****************************************************************************************************************************/
+		int		at(size_t index)
+		{
+			if (nb_element < index || nb_element == 0)
 				throw OutOfLimitsAlocatedException();
 			else
+			{
+				// assigne tab index a un iterator
 				return (this->my_tab[index]);
+			}
 		}
+
+		int		at(size_t index) const
+		{
+			if (nb_element < index || nb_element == 0)
+				throw OutOfLimitsAlocatedException();
+			else
+			{
+				// assigne tab index a un const iterator
+				return (this->my_tab[index]);
+			}
+		}
+
+		vector &operator[](size_t index)
+		{
+			if (index > nb_element)
+				throw OutOfLimitsAlocatedException();
+			else
+			{
+				// assigne tab index a un iterator
+				return (this->my_tab[index]);
+			}
+		}
+
+		vector &operator[](size_t index) const
+		{
+			if (index > nb_element)
+				throw OutOfLimitsAlocatedException();
+			else
+			{
+				// assigne tab index a un const iterator
+				return (this->my_tab[index]);
+			}
+		}
+
+		int		front()
+		{
+			if (nb_element == 0)
+				throw OutOfLimitsAlocatedException();
+			else
+				return (my_tab[0]);
+		}
+		/****************************************************************************************************************************/
+		/******************************************  Modifiers **********************************************************************/
+		/****************************************************************************************************************************/
+
+
+		/****************************************************************************************************************************/
+		/******************************************  Allocator **********************************************************************/
+		/****************************************************************************************************************************/
+
+
+
+		/****************************************************************************************************************************/
+		/******************************************  Allocator **********************************************************************/
+		/****************************************************************************************************************************/
+
+
+
+
+		/****************************************************************************************************************************/
+		/******************************************  Non-member function overloads **************************************************/
+		/****************************************************************************************************************************/
 
 		void	destroy_tab()
 		{
-			for (size_t i = size_max_allocated; i > 0; i--)
+			for (size_t i = nb_element; i > 0; i--)
 			{
 				alloc.destroy(my_tab + i);
 			}
-			alloc.deallocate(my_tab, size_max_construct);
+			alloc.deallocate(my_tab, capacity_size);
 			my_tab = NULL;
 		}
 
 		void	my_realloc_size()
 		{
 			T *temp = NULL;
-			if (capacity() == 0)
+			if (capacity_size == 0)
 			{
 				temp = alloc.allocate(1);
-				size_max_allocated = 1;
+				capacity_size = 1;
 			}
 			else
 			{
-				temp = alloc.allocate((capacity() * 2));
-				size_max_allocated = capacity() * 2;
+				temp = alloc.allocate((capacity_size * 2));
+				capacity_size = capacity_size * 2;
 			}
 
 			for (size_t i = 0; i < size(); i++)
@@ -131,26 +220,24 @@ namespace ft
 
 		void	push_back(T new_insert)
 		{
-			if (capacity() > size())
+			if (capacity_size > size())
 			{
 				alloc.construct(&my_tab[size()], new_insert);
-				size_max_construct++;
+				nb_element++;
 			}
 			else
 			{
 				my_realloc_size();
 				alloc.construct(&my_tab[size()], new_insert);
-				size_max_construct++;
+				nb_element++;
 			}
 		}
 
 		void	pop_back()
 		{
 			alloc.destroy(&my_tab[size()]);
-			size_max_construct--;
+			nb_element--;
 		}
-
-
 	};
 }
 
