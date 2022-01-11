@@ -2,6 +2,9 @@
 
 static bool check_equal(ft::vector<int, std::allocator<int> > &my_vector, std::vector<int, std::allocator<int> > &realvector)
 {
+	int i = 0;
+	ft::vector<int>::iterator it;
+
 	if (my_vector.capacity() != realvector.capacity())
 	{
 		// std::cout << "your capatciy is = " << my_vector.capacity() << "and is suppose to be = " << realvector.capacity() << std::endl;
@@ -12,10 +15,11 @@ static bool check_equal(ft::vector<int, std::allocator<int> > &my_vector, std::v
 		// std::cout << "your size is = " << my_vector.size() << "and is suppose to be = " << realvector.size() << std::endl;
 		return (FAIL);
 	}
-	for (size_t i = 0; i < realvector.size(); i++)
+	for (it = my_vector.begin(); it != my_vector.end(); it++)
 	{
 		if (my_vector.at(i) != realvector.at(i))
 			return (FAIL);
+		i++;
 	}
 	return (SUCCESS);
 }

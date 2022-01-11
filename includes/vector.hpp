@@ -14,6 +14,7 @@ namespace ft
 		size_t		nb_element;
 		Allocator	alloc;
 
+	public:
 		typedef T value_type;
 		typedef value_type& reference;
 		typedef const value_type& const_reference;
@@ -24,8 +25,6 @@ namespace ft
 		typedef ft::RandomAccessIterator<const value_type>	const_iterator;
 		typedef ft::reverse_iterator<iterator>				reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
-
-	public:
 
 		class OutOfLimitsAlocatedException : public std::exception
 		{
@@ -83,6 +82,17 @@ namespace ft
 		/******************************************  Iterators **********************************************************************/
 		/****************************************************************************************************************************/
 
+		iterator begin() {return my_tab;}
+		const_iterator begin() const {return my_tab;}
+
+		iterator end() {return &my_tab[nb_element];}
+		const_iterator end() const {return &my_tab[nb_element];}
+
+		reverse_iterator rbegin(){return reverse_iterator(end());}
+		const_reverse_iterator rbegin() const {return const_reverse_iterator(end());}
+
+		reverse_iterator rend(){return reverse_iterator(begin());}
+		const_reverse_iterator rend() const {return const_reverse_iterator(begin());}
 
 		/****************************************************************************************************************************/
 		/******************************************  Capacity ***********************************************************************/
@@ -128,7 +138,6 @@ namespace ft
 			else
 				return (my_tab[index]);
 		}
-
 		const_reference	at(size_t index) const
 		{
 			if (nb_element <= index)
