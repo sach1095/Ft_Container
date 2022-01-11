@@ -1,5 +1,7 @@
 #ifndef _VECTOR_HPP_
-#define _VECTOR_HPP_
+# define _VECTOR_HPP_
+
+#pragma once
 
 namespace ft
 {
@@ -17,6 +19,11 @@ namespace ft
 		typedef const value_type& const_reference;
 		typedef value_type*		pointer;
 		typedef value_type*	const_pointer;
+
+		typedef ft::RandomAccessIterator<value_type> 		iterator;
+		typedef ft::RandomAccessIterator<const value_type>	const_iterator;
+		typedef ft::reverse_iterator<iterator>				reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
 	public:
 
@@ -63,10 +70,12 @@ namespace ft
 		{
 			if (this == &original_vector)
 				return (*this);
-			my_tab = original_vector.my_tab;
 			capacity_size = original_vector.capacity_size;
 			nb_element = original_vector.nb_element;
 			alloc = original_vector.alloc;
+			my_tab = alloc.allocate(capacity_size);
+			for (size_t i = 0; i < nb_element; i++)
+				alloc.construct(&my_tab[i], original_vector.my_tab[i]);
 			return (*this);
 		}
 
@@ -78,9 +87,9 @@ namespace ft
 		/****************************************************************************************************************************/
 		/******************************************  Capacity ***********************************************************************/
 		/****************************************************************************************************************************/
-		size_t	size() { return (nb_element); }
-		size_t	max_size(){return (4611686018427387903);}
-		size_t	capacity() { return (capacity_size); }
+		size_t	size() const { return (nb_element); }
+		size_t	max_size() const {return (4611686018427387903);}
+		size_t	capacity() const { return (capacity_size); }
 
 		bool	empty()
 		{
@@ -112,57 +121,31 @@ namespace ft
 		/****************************************************************************************************************************/
 		/******************************************  Element access *****************************************************************/
 		/****************************************************************************************************************************/
-		int		at(size_t index)
+		reference	at(size_t index)
 		{
-			if (nb_element < index || nb_element == 0)
+			if (nb_element <= index)
 				throw OutOfLimitsAlocatedException();
 			else
-			{
-				// assigne tab index a un iterator
-				return (this->my_tab[index]);
-			}
+				return (my_tab[index]);
 		}
 
-		int		at(size_t index) const
+		const_reference	at(size_t index) const
 		{
-			if (nb_element < index || nb_element == 0)
+			if (nb_element <= index)
 				throw OutOfLimitsAlocatedException();
 			else
-			{
-				// assigne tab index a un const iterator
-				return (this->my_tab[index]);
-			}
+				return (my_tab[index]);
 		}
 
-		vector &operator[](size_t index)
-		{
-			if (index > nb_element)
-				throw OutOfLimitsAlocatedException();
-			else
-			{
-				// assigne tab index a un iterator
-				return (this->my_tab[index]);
-			}
-		}
+		reference operator[](size_t index){ return (this->my_tab[index]); }
+		const_reference operator[](size_t index) const { return (this->my_tab[index]); }
 
-		vector &operator[](size_t index) const
-		{
-			if (index > nb_element)
-				throw OutOfLimitsAlocatedException();
-			else
-			{
-				// assigne tab index a un const iterator
-				return (this->my_tab[index]);
-			}
-		}
+		reference front() { return (my_tab[0]);}
+		const_reference front() const { return (my_tab[0]);}
 
-		int		front()
-		{
-			if (nb_element == 0)
-				throw OutOfLimitsAlocatedException();
-			else
-				return (my_tab[0]);
-		}
+		reference back() {return my_tab[nb_element - 1];}
+		const_reference back() const {return my_tab[nb_element - 1];}
+
 		/****************************************************************************************************************************/
 		/******************************************  Modifiers **********************************************************************/
 		/****************************************************************************************************************************/

@@ -19,6 +19,9 @@
 
 struct input_iterator_tag {};
 
+# include "../includes/iterator_traits.hpp"
+# include "../includes/Random_Access_Iterator.hpp"
+# include "../includes/Reverse_Iterator.hpp"
 # include "../includes/vector.hpp"
 
 bool	ft_vector_test();
