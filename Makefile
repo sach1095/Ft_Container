@@ -22,6 +22,12 @@ NAME = a.out
 # Include
 I = ./includes/
 HEADER =	$(I)vector.hpp \
+			$(I)Random_Access_Iterator.hpp \
+			$(I)Reverse_Iterator.hpp \
+			$(I)iterator_traits.hpp \
+			$(I)enable_if.hpp \
+			$(I)is_integral.hpp \
+			$(I)lecxico_equal.hpp \
 			$(I)all.hpp
 
 S = ./srcs/

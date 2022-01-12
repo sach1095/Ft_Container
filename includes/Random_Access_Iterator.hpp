@@ -25,14 +25,12 @@ namespace ft{
 				return *this; 
 			};
 
-		//Dereference
 			reference operator*() {return *ptr;}
 			pointer operator->() const {return &(operator*());}
 
 			pointer base() const {return ptr;}
 			
 
-		//Incrementation
 			RandomAccessIterator	&operator++() {
 				++ptr;
 				return *this;

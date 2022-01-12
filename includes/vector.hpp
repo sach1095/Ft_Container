@@ -21,6 +21,7 @@ namespace ft
 		typedef value_type*		pointer;
 		typedef value_type*	const_pointer;
 
+		typedef size_t										size_type;
 		typedef ft::RandomAccessIterator<value_type> 		iterator;
 		typedef ft::RandomAccessIterator<const value_type>	const_iterator;
 		typedef ft::reverse_iterator<iterator>				reverse_iterator;
@@ -31,6 +32,14 @@ namespace ft
 			virtual const char* what() const throw()
 			{
 				return ("Occurence not allocated");
+			}
+		};
+
+		class bad_alloc : public std::exception
+		{
+			virtual const char* what() const throw()
+			{
+				return ("bad_alloc");
 			}
 		};
 
@@ -108,7 +117,16 @@ namespace ft
 			return (false);
 		}
 
-		void	reserve() {}
+		void	reserve(size_t N)
+		{
+			if (N > max_size())
+				throw bad_alloc();
+			else if (N > capacity_size)
+			{
+				my_realloc_size(N);
+			}
+		}
+
 		void	resize(size_t N, T value = T())
 		{
 			if (N < nb_element)
@@ -159,19 +177,103 @@ namespace ft
 		/******************************************  Modifiers **********************************************************************/
 		/****************************************************************************************************************************/
 
+		template <class InputIterator>
+		void assign (InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type * = NULL)
+		{
+			size_type size = last - first;
+			if (size > capacity_size)
+			{
+				T *tmp = alloc.allocate(size);
+				for (size_type i = 0; i < size; i++)
+				{
+					alloc.construct(&tmp[i], *first);
+					alloc.destroy(&my_tab[i]);
+					first++;
+				}
+				my_tab = tmp;
+				capacity_size = size;
+				nb_element = size;
+			}
+			else
+			{
+				for (size_type i = 0; i < size; i++)
+				{
+					alloc.destroy(&my_tab[i]);
+					alloc.construct(&my_tab[i], *first);
+					first++;
+				}
+				nb_element = size;
+			}
+		}
+		
+		void assign(size_type n, const value_type& val)
+		{
+			if (n < nb_element)
+			{
+				for (size_t i = 0; i < n; i++)
+				{
+					my_tab[i] = val;
+				}
+				for (size_t y = nb_element; y > n; y--)
+				{
+					pop_back();
+				}
+			}
+			else if (n > nb_element)
+			{
+				if (n > capacity_size)
+					my_realloc_size();
+				if (n > capacity_size)
+					my_realloc_size(n);
+				for (size_t i = 0; i < nb_element; i++)
+				{
+					alloc.destroy(my_tab + i);
+				}
+				nb_element = 0;
+				for (size_t i = 0; i < n; i++)
+				{
+					push_back(val);
+				}
+			}
+		}
 
+		void	push_back(T new_insert)
+		{
+			if (capacity_size > size())
+			{
+				alloc.construct(&my_tab[size()], new_insert);
+				nb_element++;
+			}
+			else
+			{
+				my_realloc_size();
+				alloc.construct(&my_tab[size()], new_insert);
+				nb_element++;
+			}
+		}
+
+		void	pop_back()
+		{
+			alloc.destroy(&my_tab[size()]);
+			nb_element--;
+		}
+
+		// iterator insert (iterator position, const value_type& val);
+		// void insert (iterator position, size_type n, const value_type& val)
+		// {
+
+		// }
+
+		// template <class InputIterator>
+		// void insert (iterator position, InputIterator first, InputIterator last)
+		// {
+			
+		// }
 		/****************************************************************************************************************************/
 		/******************************************  Allocator **********************************************************************/
 		/****************************************************************************************************************************/
 
-
-
-		/****************************************************************************************************************************/
-		/******************************************  Allocator **********************************************************************/
-		/****************************************************************************************************************************/
-
-
-
+		Allocator get_allocator() const{ return (alloc);}
 
 		/****************************************************************************************************************************/
 		/******************************************  Non-member function overloads **************************************************/
@@ -209,27 +311,24 @@ namespace ft
 			my_tab = temp;
 		}
 
-
-		void	push_back(T new_insert)
+		void	my_realloc_size(size_t N)
 		{
-			if (capacity_size > size())
+			T *temp = NULL;
+			if (capacity_size < N)
 			{
-				alloc.construct(&my_tab[size()], new_insert);
-				nb_element++;
+				temp = alloc.allocate(N);
+				capacity_size = N;
 			}
-			else
+			for (size_t i = 0; i < size(); i++)
 			{
-				my_realloc_size();
-				alloc.construct(&my_tab[size()], new_insert);
-				nb_element++;
+				alloc.construct(&temp[i], my_tab[i]);
 			}
+			destroy_tab();
+			my_tab = temp;
 		}
 
-		void	pop_back()
-		{
-			alloc.destroy(&my_tab[size()]);
-			nb_element--;
-		}
+
+	
 	};
 }
 
