@@ -348,15 +348,32 @@ static bool	test_v13()
 
 /************************************************************************************/
 /*** TEST 14 : **********************************************************************/
-/*** check assign function - vector empty *******************************************/
+/*** check insert function witch it and value ***************************************/
 /************************************************************************************/
 static bool	test_v14()
 {
 	ft::vector<int, std::allocator<int> > my_vector;
 	std::vector<int, std::allocator<int> > realvector;
+	std::vector<int>::iterator it;
+	ft::vector<int>::iterator my_it;
 
-	realvector.assign(5, 100);
-	my_vector.assign(5, 100);
+	for (size_t i = 0; i < 3; i++)
+	{
+		realvector.push_back(i);
+		my_vector.push_back(i);
+	}
+
+	it = realvector.begin();
+	it++;
+	realvector.insert(it,200);
+	// realvector.insert(it,300);
+	// realvector.insert(it,800);
+
+	my_it = my_vector.begin();
+	my_it++;
+	my_vector.insert(my_it,200);
+	// my_vector.insert(my_it,300);
+	// my_vector.insert(my_it,800);
 
 	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
@@ -364,6 +381,34 @@ static bool	test_v14()
 	return (SUCCESS);
 }
 
+/************************************************************************************/
+/*** TEST 15 : **********************************************************************/
+/*** check insert function witch it and value ***************************************/
+/************************************************************************************/
+static bool	test_v15()
+{
+	ft::vector<int, std::allocator<int> > my_vector;
+	std::vector<int, std::allocator<int> > realvector;
+	std::vector<int>::iterator it;
+	ft::vector<int>::iterator my_it;
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		realvector.push_back(i);
+		my_vector.push_back(i);
+	}
+
+	it = realvector.begin();
+	it++;
+	realvector.insert(it, 3, 200);
+ 	my_it = my_vector.begin();
+	my_it++;
+	my_vector.insert(my_it, 3, 200);
+	print(my_vector, realvector);
+	if (check_equal(my_vector, realvector))
+		return (FAIL);
+	return (SUCCESS);
+}
 bool ft_vector_test()
 {
 	std::cout << "\033[3;33m------- \033[3;34mStart \033[3;32mVector \033[3;35mTest \033[3;33m-------\033[0m\n" << std::endl;
@@ -483,6 +528,13 @@ bool ft_vector_test()
 	}
 	else
 		std::cout << "Test v14 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+	if (test_v15())
+	{
+		std::cout << "Test v15 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "Test v15 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
 	/*------------------------------------ End test ------------------------------------*/
 	std::cout << "\n\033[3;33m------- \033[3;34mEnd \033[3;32mVector \033[3;35mTest \033[3;33m-------\033[0m\n" << std::endl;
 

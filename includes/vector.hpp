@@ -8,12 +8,6 @@ namespace ft
 	template < typename T, typename Allocator = std::allocator<T> >
 	class vector{
 
-	protected:
-		T			*my_tab;
-		size_t		capacity_size;
-		size_t		nb_element;
-		Allocator	alloc;
-
 	public:
 		typedef T value_type;
 		typedef value_type& reference;
@@ -26,6 +20,14 @@ namespace ft
 		typedef ft::RandomAccessIterator<const value_type>	const_iterator;
 		typedef ft::reverse_iterator<iterator>				reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+
+	protected:
+		pointer		my_tab;
+		size_t		capacity_size;
+		size_t		nb_element;
+		Allocator	alloc;
+
+	public:
 
 		class OutOfLimitsAlocatedException : public std::exception
 		{
@@ -90,18 +92,17 @@ namespace ft
 		/****************************************************************************************************************************/
 		/******************************************  Iterators **********************************************************************/
 		/****************************************************************************************************************************/
+		iterator begin(void) {return (iterator(this->my_tab));}
+		const_iterator begin(void) const { return (const_iterator(this->my_tab)); }
 
-		iterator begin() {return my_tab;}
-		const_iterator begin() const {return my_tab;}
+		reverse_iterator rbegin(void) { return (reverse_iterator(this->end())); }
+		const_reverse_iterator rbegin(void) const { return (const_reverse_iterator(this->end())); }
 
-		iterator end() {return &my_tab[nb_element];}
-		const_iterator end() const {return &my_tab[nb_element];}
+		iterator end(void) { return (iterator(&(this->my_tab[this->nb_element]))); }
+		const_iterator end(void) const { return (const_iterator(&(this->my_tab[this->nb_element]))); }
 
-		reverse_iterator rbegin(){return reverse_iterator(end());}
-		const_reverse_iterator rbegin() const {return const_reverse_iterator(end());}
-
-		reverse_iterator rend(){return reverse_iterator(begin());}
-		const_reverse_iterator rend() const {return const_reverse_iterator(begin());}
+		reverse_iterator rend(void) { return (reverse_iterator(this->begin())); }
+		const_reverse_iterator rend(void) const { return (const_reverse_iterator(this->begin())); }
 
 		/****************************************************************************************************************************/
 		/******************************************  Capacity ***********************************************************************/
@@ -190,6 +191,7 @@ namespace ft
 					alloc.destroy(&my_tab[i]);
 					first++;
 				}
+				destroy_tab();
 				my_tab = tmp;
 				capacity_size = size;
 				nb_element = size;
@@ -205,7 +207,7 @@ namespace ft
 				nb_element = size;
 			}
 		}
-		
+
 		void assign(size_type n, const value_type& val)
 		{
 			if (n < nb_element)
@@ -219,7 +221,7 @@ namespace ft
 					pop_back();
 				}
 			}
-			else if (n > nb_element)
+			else
 			{
 				if (n > capacity_size)
 					my_realloc_size();
@@ -258,16 +260,43 @@ namespace ft
 			nb_element--;
 		}
 
-		// iterator insert (iterator position, const value_type& val);
-		// void insert (iterator position, size_type n, const value_type& val)
-		// {
+		iterator insert(iterator position, const value_type& val)
+		{
+			size_type	range = 0;
 
-		// }
+			if (capacity_size <= nb_element + 1)
+				my_realloc_size();
+			if (nb_element > 0)
+				range = position - begin();
+			std::cout << "test range = " << range << std::endl;
+			nb_element++;
+			size_t	i = nb_element;
+			while (i > 0)
+			{
+				if (i != range)
+				{
+					alloc.construct(&my_tab[i], my_tab[i - 1]);
+				}
+				else
+					alloc.construct(&my_tab[range], val);
+				i--;
+			}
+			return (position);
+		}
+
+		void insert(iterator position, size_type n, const value_type& val)
+		{
+			for (size_t i = 0; i < n; i++)
+			{
+				std::cout << "test boucle = " << i << std::endl;
+				position = insert(position, val);
+			}
+			std::cout << "end" << std::endl;
+		}
 
 		// template <class InputIterator>
 		// void insert (iterator position, InputIterator first, InputIterator last)
 		// {
-			
 		// }
 		/****************************************************************************************************************************/
 		/******************************************  Allocator **********************************************************************/
@@ -291,44 +320,40 @@ namespace ft
 
 		void	my_realloc_size()
 		{
-			T *temp = NULL;
 			if (capacity_size == 0)
 			{
-				temp = alloc.allocate(1);
+				my_tab = alloc.allocate(1);
 				capacity_size = 1;
 			}
 			else
 			{
-				temp = alloc.allocate((capacity_size * 2));
-				capacity_size = capacity_size * 2;
+				pointer tmp = alloc.allocate(capacity_size * 2);
+				for (size_type i = 0; i < nb_element; i++)
+				{
+					alloc.construct(&tmp[i], my_tab[i]);
+					alloc.destroy(&my_tab[i]);
+				}
+				alloc.deallocate(my_tab, capacity_size);
+				my_tab = tmp;
+				capacity_size *= 2;
 			}
-
-			for (size_t i = 0; i < size(); i++)
-			{
-				alloc.construct(&temp[i], my_tab[i]);
-			}
-			destroy_tab();
-			my_tab = temp;
 		}
 
 		void	my_realloc_size(size_t N)
 		{
-			T *temp = NULL;
 			if (capacity_size < N)
 			{
-				temp = alloc.allocate(N);
+				pointer tmp = alloc.allocate(N);
+				for (size_type i = 0; i < nb_element; i++)
+				{
+					alloc.construct(&tmp[i], my_tab[i]);
+					alloc.destroy(&my_tab[i]);
+				}
+				alloc.deallocate(my_tab, capacity_size);
+				my_tab = tmp;
 				capacity_size = N;
 			}
-			for (size_t i = 0; i < size(); i++)
-			{
-				alloc.construct(&temp[i], my_tab[i]);
-			}
-			destroy_tab();
-			my_tab = temp;
 		}
-
-
-	
 	};
 }
 
