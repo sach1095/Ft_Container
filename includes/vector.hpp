@@ -262,34 +262,43 @@ namespace ft
 
 		iterator insert(iterator position, const value_type& val)
 		{
-			size_type	range = 0;
-
-			if (capacity_size <= nb_element + 1)
+			std::cout << "at stat insert size = " << nb_element << " capa = " << capacity_size << std::endl;
+			if (nb_element + 1 >= capacity_size)
 				my_realloc_size();
+			std::cout << "insert afther realloc size = " << nb_element << " capa = " << capacity_size << std::endl;
+			size_type dist = 0;
 			if (nb_element > 0)
-				range = position - begin();
-			std::cout << "test range = " << range << std::endl;
+				dist = position - begin();
+			std::cout << "insert dist = " << dist << std::endl;
+			alloc.construct(&my_tab[nb_element], my_tab[nb_element - 1]);
+			for (size_type i = nb_element - 1; i > dist; i--)
+				my_tab[i] = my_tab[i - 1];
+			my_tab[dist] = val;
 			nb_element++;
-			size_t	i = nb_element;
-			while (i > 0)
-			{
-				if (i != range)
-				{
-					alloc.construct(&my_tab[i], my_tab[i - 1]);
-				}
-				else
-					alloc.construct(&my_tab[range], val);
-				i--;
-			}
-			return (position);
+			return position;
 		}
 
 		void insert(iterator position, size_type n, const value_type& val)
 		{
-			for (size_t i = 0; i < n; i++)
+			if (n <= 0)
+				return ;
+			if (nb_element + n > capacity_size)
+				my_realloc_size();
+			if (nb_element + n > capacity_size)
+				my_realloc_size(n);
+			size_type dist = 0;
+			nb_element += n;
+			if (nb_element > 0)
+				dist = position - begin();
+			for (size_type i = nb_element; i > (dist + n); i--)
+				alloc.construct(&my_tab[i], my_tab[i - n]);
+			for (size_t i = (dist + n); i > dist; i--)
 			{
-				std::cout << "test boucle = " << i << std::endl;
-				position = insert(position, val);
+				alloc.construct(&my_tab[i], val);
+			}
+			for (size_t i = dist; i > 0; i--)
+			{
+				alloc.construct(&my_tab[i], my_tab[i - n]);
 			}
 			std::cout << "end" << std::endl;
 		}
@@ -302,7 +311,7 @@ namespace ft
 		/******************************************  Allocator **********************************************************************/
 		/****************************************************************************************************************************/
 
-		Allocator get_allocator() const{ return (alloc);}
+		Allocator get_allocator() const{ return (alloc); }
 
 		/****************************************************************************************************************************/
 		/******************************************  Non-member function overloads **************************************************/

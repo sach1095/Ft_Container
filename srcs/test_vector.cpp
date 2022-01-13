@@ -84,13 +84,15 @@ static bool	test_v3()
 	ft::vector<int, std::allocator<int> > my_vector;
 	std::vector<int, std::allocator<int> > realvector;
 
-	my_vector.push_back(1);
-	my_vector.push_back(2);
-	my_vector.push_back(3);
-
-	realvector.push_back(1);
-	realvector.push_back(2);
-	realvector.push_back(3);
+	for (size_t i = 0; i < 30; i++)
+	{
+		realvector.push_back(i);
+	}
+	
+	for (size_t i = 0; i < 30; i++)
+	{
+		my_vector.push_back(i);
+	}
 
 	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
@@ -357,23 +359,30 @@ static bool	test_v14()
 	std::vector<int>::iterator it;
 	ft::vector<int>::iterator my_it;
 
-	for (size_t i = 0; i < 3; i++)
+	for (size_t i = 0; i < 5; i++)
 	{
 		realvector.push_back(i);
 		my_vector.push_back(i);
 	}
+	
 
 	it = realvector.begin();
-	it++;
-	realvector.insert(it,200);
-	// realvector.insert(it,300);
-	// realvector.insert(it,800);
+	it = realvector.insert(it,200);
+	it = realvector.insert(it,200);
+	it = realvector.insert(it,200);
+	it = realvector.insert(it,200);
 
 	my_it = my_vector.begin();
-	my_it++;
-	my_vector.insert(my_it,200);
-	// my_vector.insert(my_it,300);
-	// my_vector.insert(my_it,800);
+	std::cout << "start check 1 ptr = " << *my_it << std::endl;
+	my_it = my_vector.insert(my_it,200);
+	std::cout << "start check 2 ptr = " << *my_it << std::endl;
+	my_it = my_vector.insert(my_it,200);
+	std::cout << "start check 3 ptr = " << *my_it << std::endl;
+	my_it = my_vector.insert(my_it,200);
+	std::cout << "start check 4 ptr = " << *my_it << std::endl;
+	my_it = my_vector.insert(my_it,200);
+	std::cout << "start check 5 ptr = " << *my_it << std::endl;
+
 
 	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
@@ -389,21 +398,8 @@ static bool	test_v15()
 {
 	ft::vector<int, std::allocator<int> > my_vector;
 	std::vector<int, std::allocator<int> > realvector;
-	std::vector<int>::iterator it;
-	ft::vector<int>::iterator my_it;
 
-	for (size_t i = 0; i < 4; i++)
-	{
-		realvector.push_back(i);
-		my_vector.push_back(i);
-	}
 
-	it = realvector.begin();
-	it++;
-	realvector.insert(it, 3, 200);
- 	my_it = my_vector.begin();
-	my_it++;
-	my_vector.insert(my_it, 3, 200);
 	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
