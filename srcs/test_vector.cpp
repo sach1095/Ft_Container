@@ -5,27 +5,6 @@ static bool check_equal(ft::vector<int, std::allocator<int> > &my_vector, std::v
 	int i = 0;
 	ft::vector<int>::iterator it;
 
-	for (it = my_vector.begin(); it != my_vector.end(); it++)
-	{
-		if (my_vector.at(i) != realvector.at(i))
-			return (FAIL);
-		i++;
-	}
-	if (my_vector.capacity() != realvector.capacity())
-	{
-		std::cout << "your capatciy is = " << my_vector.capacity() << " and is suppose to be = " << realvector.capacity() << std::endl;
-		return (FAIL);
-	}
-	else if (my_vector.size() != realvector.size())
-	{
-		// std::cout << "your size is = " << my_vector.size() << "and is suppose to be = " << realvector.size() << std::endl;
-		return (FAIL);
-	}
-	return (SUCCESS);
-}
-
-static void	print(ft::vector<int, std::allocator<int> > &my_vector, std::vector<int, std::allocator<int> > &realvector)
-{
 	std::cout << "-----------------\nrealvector :" << std::endl;
 	for (size_t i = 0; i < realvector.size(); i++)
 	{
@@ -39,6 +18,23 @@ static void	print(ft::vector<int, std::allocator<int> > &my_vector, std::vector<
 		std::cout << my_vector.at(i) << " ";
 	}
 	std::cout << "\n" << std::endl;
+	for (it = my_vector.begin(); it != my_vector.end(); it++)
+	{
+		if (my_vector.at(i) != realvector.at(i))
+			return (FAIL);
+		i++;
+	}
+	if (my_vector.capacity() != realvector.capacity())
+	{
+		std::cout << "your capatciy is = " << my_vector.capacity() << " and is suppose to be = " << realvector.capacity() << std::endl;
+		return (FAIL);
+	}
+	else if (my_vector.size() != realvector.size())
+	{
+		std::cout << "your size is = " << my_vector.size() << "and is suppose to be = " << realvector.size() << std::endl;
+		return (FAIL);
+	}
+	return (SUCCESS);
 }
 
 /************************************************************************************/
@@ -69,7 +65,6 @@ static bool	test_v2()
 
 	realvector.push_back(5);
 
-	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
@@ -94,7 +89,6 @@ static bool	test_v3()
 		my_vector.push_back(i);
 	}
 
-	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
@@ -120,7 +114,6 @@ static bool	test_v4()
 	realvector.pop_back();
 	realvector.push_back(5);
 
-	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
@@ -138,7 +131,6 @@ static bool	test_v5()
 	realvector.push_back(5);
 	my_vector.push_back(5);
 
-	print(my_vector, realvector);
 	if (my_vector.front() != realvector.front() )
 		return (FAIL);
 	if (check_equal(my_vector, realvector))
@@ -165,7 +157,6 @@ static bool	test_v6()
 
 	my_vector.resize(5);
 
-	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
@@ -190,7 +181,6 @@ static bool	test_v7()
 
 	my_vector.resize(5);
 
-	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
@@ -215,7 +205,6 @@ static bool	test_v8()
 
 	my_vector.resize(5, 100);
 
-	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
@@ -249,7 +238,6 @@ static bool	test_v9()
 	realvector.reserve(14);
 	my_vector.reserve(14);
 
-	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
@@ -277,7 +265,6 @@ static bool	test_v10()
 	if (realvector.empty() != my_vector.empty())
 		return (FAIL);
 
-	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
@@ -297,11 +284,9 @@ static bool	test_v11()
 		realvector.push_back(i);
 		my_vector.push_back(i);
 	}
-	print(my_vector, realvector);
 	realvector.assign(5, 100);
 	my_vector.assign(5, 100);
 
-	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
@@ -324,7 +309,6 @@ static bool	test_v12()
 	realvector.assign(5, 100);
 	my_vector.assign(5, 100);
 
-	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
@@ -342,7 +326,6 @@ static bool	test_v13()
 	realvector.assign(5, 100);
 	my_vector.assign(5, 100);
 
-	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
@@ -356,35 +339,23 @@ static bool	test_v14()
 {
 	ft::vector<int, std::allocator<int> > my_vector;
 	std::vector<int, std::allocator<int> > realvector;
-	std::vector<int>::iterator it;
-	ft::vector<int>::iterator my_it;
 
 	for (size_t i = 0; i < 5; i++)
 	{
 		realvector.push_back(i);
 		my_vector.push_back(i);
 	}
-	
 
-	it = realvector.begin();
-	it = realvector.insert(it,200);
-	it = realvector.insert(it,200);
-	it = realvector.insert(it,200);
-	it = realvector.insert(it,200);
+	realvector.insert(realvector.begin(),200);
+	realvector.insert(realvector.begin(),300);
+	realvector.insert(realvector.begin(),400);
+	realvector.insert(realvector.begin(),500);
 
-	my_it = my_vector.begin();
-	std::cout << "start check 1 ptr = " << *my_it << std::endl;
-	my_it = my_vector.insert(my_it,200);
-	std::cout << "start check 2 ptr = " << *my_it << std::endl;
-	my_it = my_vector.insert(my_it,200);
-	std::cout << "start check 3 ptr = " << *my_it << std::endl;
-	my_it = my_vector.insert(my_it,200);
-	std::cout << "start check 4 ptr = " << *my_it << std::endl;
-	my_it = my_vector.insert(my_it,200);
-	std::cout << "start check 5 ptr = " << *my_it << std::endl;
+	my_vector.insert(my_vector.begin(),200);
+	my_vector.insert(my_vector.begin(),300);
+	my_vector.insert(my_vector.begin(),400);
+	my_vector.insert(my_vector.begin(),500);
 
-
-	print(my_vector, realvector);
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
@@ -392,19 +363,28 @@ static bool	test_v14()
 
 /************************************************************************************/
 /*** TEST 15 : **********************************************************************/
-/*** check insert function witch it and value ***************************************/
+/*** check insert function witch it number of iteration of the value ****************/
 /************************************************************************************/
 static bool	test_v15()
 {
 	ft::vector<int, std::allocator<int> > my_vector;
 	std::vector<int, std::allocator<int> > realvector;
 
+	// for (size_t i = 0; i < 5; i++)
+	// {
+	// 	realvector.push_back(i);
+	// 	my_vector.push_back(i);
+	// }
 
-	print(my_vector, realvector);
+	// realvector.insert(realvector.begin(), 2, 200);
+
+	// my_vector.insert(my_vector.begin(), 2, 200);
+
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
 }
+
 bool ft_vector_test()
 {
 	std::cout << "\033[3;33m------- \033[3;34mStart \033[3;32mVector \033[3;35mTest \033[3;33m-------\033[0m\n" << std::endl;

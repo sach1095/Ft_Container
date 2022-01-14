@@ -17,14 +17,10 @@
 # include <istream>
 # include <iomanip>
 
-struct input_iterator_tag {};
-
-# include "../includes/iterator_traits.hpp"
-# include "../includes/Reverse_Iterator.hpp"
-# include "../includes/Random_Access_Iterator.hpp"
 # include "../includes/enable_if.hpp"
-# include "../includes/is_integral.hpp"
 # include "../includes/lecxico_equal.hpp"
+# include "../includes/is_integral.hpp"
+# include "../includes/All_Iterator.hpp"
 # include "../includes/vector.hpp"
 
 bool	ft_vector_test();
