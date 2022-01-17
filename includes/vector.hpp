@@ -260,41 +260,31 @@ namespace ft
 
 		iterator insert(iterator position, const value_type& val)
 		{
-			pointer tmp = NULL;
-			size_type n = 1;
-
 			size_t pos = 0;
 			if (_size_element > 0)
-				position - begin();
-			if (_size_element + n <= _size_capacity)
+				pos = position - begin();
+			if (_size_element + 1 > _size_capacity)
+				my_realloc_size();
+			for (size_t i = _size_element; i > pos; i--)
 			{
-				tmp = alloc.allocate(_size_capacity);
+				alloc.construct(&_my_tab[i], _my_tab[i -1]);
 			}
-			else if (_size_element + n < _size_capacity * 2)
-			{
-				tmp = alloc.allocate(_size_capacity * 2);
-				_size_capacity *= 2;
-			}
-			else
-			{
-				tmp = alloc.allocate(_size_element + n);
-				_size_capacity += n;
-			}
-			_size_element += n;
-			size_t save = _size_element;
-			for (size_type i = _size_element - 1; i > pos; i--)
-				alloc.construct(&tmp[i], _my_tab[i - n]);
-			alloc.construct(&tmp[pos], val);
-			for (size_type i = pos; i > 0; i--)
-				alloc.construct(&tmp[i], _my_tab[i - n]);
-			destroy_tab();
-			_size_element = save;
-			_my_tab = tmp;
+			_size_element += 1;
+			alloc.construct(&_my_tab[pos], val);
 			return (iterator(&_my_tab[pos]));
 		}
 
 		void insert(iterator position, size_type n, const value_type& val)
 		{
+			size_t pos = 0;
+			if (_size_element > 0)
+				pos = position - begin();
+
+			if (_size_element + n > _size_capacity * 2)
+				my_realloc_size(_size_element + n);
+			else if (_size_element + n > _size_capacity)
+				my_realloc_size();
+			position = iterator(&_my_tab[pos]);
 			for (size_t i = 0; i < n; i++)
 			{
 				position = insert(position, val);
@@ -339,7 +329,6 @@ namespace ft
 				_size_capacity = 1;
 				return ;
 			}
-
 			pointer tmp;
 			tmp = alloc.allocate(_size_capacity * 2);
 			size_t save = _size_element;
@@ -348,8 +337,8 @@ namespace ft
 				alloc.construct(&tmp[i], _my_tab[i]);
 			}
 			destroy_tab();
-			_size_element = save;
 			_size_capacity *= 2;
+			_size_element = save;
 			_my_tab = tmp;
 		}
 

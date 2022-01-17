@@ -339,6 +339,8 @@ static bool	test_v14()
 {
 	ft::vector<int, std::allocator<int> > my_vector;
 	std::vector<int, std::allocator<int> > realvector;
+	std::vector<int>::iterator it;
+	ft::vector<int>::iterator my_it;
 
 	for (size_t i = 0; i < 5; i++)
 	{
@@ -346,15 +348,17 @@ static bool	test_v14()
 		my_vector.push_back(i);
 	}
 
-	realvector.insert(realvector.begin(),200);
-	realvector.insert(realvector.begin(),300);
-	realvector.insert(realvector.begin(),400);
-	realvector.insert(realvector.begin(),500);
+	it = realvector.begin()+1;
+	it = realvector.insert(it,200);
+	it = realvector.insert(it,300);
+	it = realvector.insert(it,400);
+	it = realvector.insert(it,500);
 
-	my_vector.insert(my_vector.begin(),200);
-	my_vector.insert(my_vector.begin(),300);
-	my_vector.insert(my_vector.begin(),400);
-	my_vector.insert(my_vector.begin(),500);
+	my_it = my_vector.begin()+1;
+	my_it = my_vector.insert(my_it,200);
+	my_it = my_vector.insert(my_it,300);
+	my_it = my_vector.insert(my_it,400);
+	my_it = my_vector.insert(my_it,500);
 
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
@@ -376,9 +380,9 @@ static bool	test_v15()
 		my_vector.push_back(i);
 	}
 
-	realvector.insert(realvector.begin(), 5, 200);
+	realvector.insert(realvector.begin(), 20, 200);
 
-	my_vector.insert(my_vector.begin(), 5, 200);
+	my_vector.insert(my_vector.begin(), 20, 200);
 
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
