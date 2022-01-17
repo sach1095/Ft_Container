@@ -263,6 +263,9 @@ namespace ft
 			pointer tmp = NULL;
 			size_type n = 1;
 
+			size_t pos = 0;
+			if (_size_element > 0)
+				position - begin();
 			if (_size_element + n <= _size_capacity)
 			{
 				tmp = alloc.allocate(_size_capacity);
@@ -277,36 +280,24 @@ namespace ft
 				tmp = alloc.allocate(_size_element + n);
 				_size_capacity += n;
 			}
-			size_t pos = position - begin();
 			_size_element += n;
 			size_t save = _size_element;
-			std::cout << "debug pos = " << pos << " value = " << val << std::endl;
-
 			for (size_type i = _size_element - 1; i > pos; i--)
 				alloc.construct(&tmp[i], _my_tab[i - n]);
 			alloc.construct(&tmp[pos], val);
 			for (size_type i = pos; i > 0; i--)
 				alloc.construct(&tmp[i], _my_tab[i - n]);
-
-			std::cout << "befor ret tab = ";
-			for (size_t i = 0; i < size(); i++)
-			{
-				std::cout << tmp[i] << " ";
-			}
-			std::cout << " end show" << std::endl;
 			destroy_tab();
 			_size_element = save;
 			_my_tab = tmp;
-			return position;
+			return (iterator(&_my_tab[pos]));
 		}
 
 		void insert(iterator position, size_type n, const value_type& val)
 		{
-			
 			for (size_t i = 0; i < n; i++)
 			{
-				insert(position, val);
-				i++;
+				position = insert(position, val);
 			}
 		}
 

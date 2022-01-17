@@ -83,7 +83,7 @@ static bool	test_v3()
 	{
 		realvector.push_back(i);
 	}
-	
+
 	for (size_t i = 0; i < 30; i++)
 	{
 		my_vector.push_back(i);
@@ -360,7 +360,7 @@ static bool	test_v14()
 		return (FAIL);
 	return (SUCCESS);
 }
- 
+
 /************************************************************************************/
 /*** TEST 15 : **********************************************************************/
 /*** check insert function witch it number of iteration of the value ****************/
@@ -370,15 +370,15 @@ static bool	test_v15()
 	ft::vector<int, std::allocator<int> > my_vector;
 	std::vector<int, std::allocator<int> > realvector;
 
-	// for (size_t i = 0; i < 5; i++)
-	// {
-	// 	realvector.push_back(i);
-	// 	my_vector.push_back(i);
-	// }
+	for (size_t i = 0; i < 5; i++)
+	{
+		realvector.push_back(i);
+		my_vector.push_back(i);
+	}
 
-	// realvector.insert(realvector.begin(), 2, 200);
+	realvector.insert(realvector.begin(), 5, 200);
 
-	// my_vector.insert(my_vector.begin(), 2, 200);
+	my_vector.insert(my_vector.begin(), 5, 200);
 
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
