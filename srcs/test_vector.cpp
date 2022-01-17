@@ -322,9 +322,28 @@ static bool	test_v13()
 {
 	ft::vector<int, std::allocator<int> > my_vector;
 	std::vector<int, std::allocator<int> > realvector;
+	std::vector<int, std::allocator<int> > test;
+	ft::vector<int, std::allocator<int> > mtest;
+	std::vector<int>::iterator it;
+	std::vector<int>::iterator ite;
+	ft::vector<int>::iterator mit;
+	ft::vector<int>::iterator mite;
 
-	realvector.assign(5, 100);
-	my_vector.assign(5, 100);
+
+	for (size_t i = 50; i < 55; i++)
+	{
+		test.push_back(i);
+		mtest.push_back(i);
+	}
+
+	it = test.begin();
+	ite = test.end()--;
+
+	mit = mtest.begin();
+	mite = mtest.end()--;
+
+	realvector.assign(it, ite);
+	my_vector.assign(mit, mite);
 
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
@@ -379,15 +398,270 @@ static bool	test_v15()
 		realvector.push_back(i);
 		my_vector.push_back(i);
 	}
+	realvector.insert(realvector.begin(), 10, 200);
 
-	realvector.insert(realvector.begin(), 20, 200);
-
-	my_vector.insert(my_vector.begin(), 20, 200);
+	my_vector.insert(my_vector.begin(), 10, 200);
 
 	if (check_equal(my_vector, realvector))
 		return (FAIL);
 	return (SUCCESS);
 }
+
+/************************************************************************************/
+/*** TEST 16 : **********************************************************************/
+/*** check insert function witch range iterator *************************************/
+/************************************************************************************/
+static bool	test_v16()
+{
+	ft::vector<int, std::allocator<int> > my_vector;
+	std::vector<int, std::allocator<int> > realvector;
+	std::vector<int, std::allocator<int> > test;
+	ft::vector<int, std::allocator<int> > mtest;
+	std::vector<int>::iterator it;
+	std::vector<int>::iterator ite;
+	ft::vector<int>::iterator mit;
+	ft::vector<int>::iterator mite;
+
+	for (size_t i = 0; i < 5; i++)
+	{
+		realvector.push_back(i);
+		my_vector.push_back(i);
+	}
+	for (size_t i = 50; i < 55; i++)
+	{
+		test.push_back(i);
+		mtest.push_back(i);
+	}
+
+	it = test.begin();
+	ite = test.end()--;
+
+	mit = mtest.begin();
+	mite = mtest.end()--;
+
+	realvector.insert(realvector.begin()+2, it, ite);
+
+	my_vector.insert(my_vector.begin()+2, mit, mite);
+
+	if (check_equal(my_vector, realvector))
+		return (FAIL);
+	return (SUCCESS);
+}
+
+/************************************************************************************/
+/*** TEST 17 : **********************************************************************/
+/*** check constructor witch range iterator *****************************************/
+/************************************************************************************/
+static bool	test_v17()
+{
+	std::vector<int, std::allocator<int> > test;
+	ft::vector<int, std::allocator<int> > mtest;
+	std::vector<int>::iterator it;
+	std::vector<int>::iterator ite;
+	ft::vector<int>::iterator mit;
+	ft::vector<int>::iterator mite;
+
+	for (size_t i = 50; i < 55; i++)
+	{
+		test.push_back(i);
+		mtest.push_back(i);
+	}
+
+	it = test.begin();
+	ite = test.end()--;
+
+	mit = mtest.begin();
+	mite = mtest.end()--;
+
+	std::vector<int, std::allocator<int> > realvector(it, ite);
+	ft::vector<int, std::allocator<int> > my_vector(mit, mite);
+
+	if (check_equal(my_vector, realvector))
+		return (FAIL);
+	return (SUCCESS);
+}
+
+/*** TEST 18 : **********************************************************************/
+/*** check fuction swap *************************************************************/
+/************************************************************************************/
+static bool	test_v18()
+{
+	ft::vector<int, std::allocator<int> > my_vector;
+	ft::vector<int, std::allocator<int> > my_ref;
+	ft::vector<int, std::allocator<int> > my_vector_afther;
+
+	std::vector<int, std::allocator<int> > realvector;
+	std::vector<int, std::allocator<int> > real_ref;
+	std::vector<int, std::allocator<int> > realvector_afther;
+	for (size_t i = 0; i < 5; i++)
+	{
+		my_vector.push_back(i);
+		realvector.push_back(i);
+
+		my_ref.push_back(i);
+		real_ref.push_back(i);
+	}
+	for (size_t i = 10; i < 5; i++)
+	{
+		my_vector_afther.push_back(i);
+		realvector_afther.push_back(i);
+	}
+
+	my_vector.swap(my_vector_afther);
+	realvector.swap(realvector_afther);
+
+	std::cout << "\nrealvector befor swap :" << std::endl;
+	for (size_t i = 0; i < realvector.size(); i++)
+	{
+		std::cout << realvector.at(i) << " ";
+	}
+	std::cout << std::endl;
+	std::cout << "real_ref the result we need :" << std::endl;
+	for (size_t i = 0; i < real_ref.size(); i++)
+	{
+		std::cout << real_ref.at(i) << " ";
+	}
+	std::cout << std::endl;
+	std::cout << "realvector afther swap :" << std::endl;
+	for (size_t i = 0; i < realvector_afther.size(); i++)
+	{
+		std::cout << realvector_afther.at(i) << " ";
+	}
+	std::cout << std::endl;
+
+	std::cout << "-----------------\nmy_vector befor swap:" << std::endl;
+	for (size_t i = 0; i < my_vector.size(); i++)
+	{
+		std::cout << my_vector.at(i) << " ";
+	}
+	std::cout << std::endl;
+	std::cout << "my_ref the result we need " << std::endl;
+	for (size_t i = 0; i < my_ref.size(); i++)
+	{
+		std::cout << my_ref.at(i) << " ";
+	}
+	std::cout << "\nmy_vector afther swap :" << std::endl;
+	for (size_t i = 0; i < my_vector_afther.size(); i++)
+	{
+		std::cout << my_vector_afther.at(i) << " ";
+	}
+	std::cout << "\n" << std::endl;
+	ft::vector<int>::iterator it;
+	int i = 0;
+	for (it = my_ref.begin(); it != my_ref.end(); it++)
+	{
+		if (my_ref.at(i) != my_vector_afther.at(i))
+			return (FAIL);
+		i++;
+	}
+	if (my_ref.capacity() != my_vector_afther.capacity())
+	{
+		std::cout << "your capatciy is = " << my_ref.capacity() << " and is suppose to be = " << my_vector_afther.capacity() << std::endl;
+		return (FAIL);
+	}
+	else if (my_ref.size() != my_vector_afther.size())
+	{
+		std::cout << "your size is = " << my_ref.size() << "and is suppose to be = " << my_vector_afther.size() << std::endl;
+		return (FAIL);
+	}
+	return (SUCCESS);
+}
+
+/*** TEST 19 : **********************************************************************/
+/*** check overload function ********************************************************/
+/************************************************************************************/
+static bool	test_v19()
+{
+	ft::vector<int, std::allocator<int> > my_foo(3,100);
+	ft::vector<int, std::allocator<int> > my_bar(2,200);
+
+	std::vector<int, std::allocator<int> > foo(3,100);
+	std::vector<int, std::allocator<int> > bar(2,200);
+
+	std::cout << "--------------------- Real vector -------------------------------- " << std::endl;
+	if (foo==bar) std::cout << "foo and bar are equal\n";
+	if (foo!=bar) std::cout << "foo and bar are not equal\n";
+	if (foo< bar) std::cout << "foo is less than bar\n";
+	if (foo> bar) std::cout << "foo is greater than bar\n";
+	if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+	if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+
+	std::cout << "--------------------- My vector -------------------------------- " << std::endl;
+	if (my_foo==my_bar) std::cout << "foo and bar are equal\n";
+	if (my_foo!=my_bar) std::cout << "foo and bar are not equal\n";
+	if (my_foo< my_bar) std::cout << "foo is less than bar\n";
+	if (my_foo> my_bar) std::cout << "foo is greater than bar\n";
+	if (my_foo<=my_bar) std::cout << "foo is less than or equal to bar\n";
+	if (my_foo>=my_bar) std::cout << "foo is greater than or equal to bar\n";
+	std::cout << "\n" << std::endl;
+	return (SUCCESS);
+}
+
+/*** TEST 20 : **********************************************************************/
+/*** check erase witch pos iterator *************************************************/
+/************************************************************************************/
+static bool	test_v20()
+{
+	std::vector<int, std::allocator<int> > realvector;
+	ft::vector<int, std::allocator<int> > my_vector;
+
+	for (size_t i = 0; i < 5; i++)
+	{
+		my_vector.push_back(i);
+		realvector.push_back(i);
+	}
+
+	realvector.erase(realvector.begin()+2);
+	my_vector.erase(my_vector.begin()+2);
+	if (check_equal(my_vector, realvector))
+		return (FAIL);
+	return (SUCCESS);
+}
+
+/*** TEST 21 : **********************************************************************/
+/*** check erase witch range of iterator ********************************************/
+/************************************************************************************/
+static bool	test_v21()
+{
+	std::vector<int, std::allocator<int> > realvector;
+	ft::vector<int, std::allocator<int> > my_vector;
+
+	for (size_t i = 0; i < 5; i++)
+	{
+		my_vector.push_back(i);
+		realvector.push_back(i);
+	}
+
+	realvector.erase(realvector.begin(), realvector.begin()+2);
+	my_vector.erase(my_vector.begin(), my_vector.begin()+2);
+
+	if (check_equal(my_vector, realvector))
+		return (FAIL);
+	return (SUCCESS);
+}
+
+/*** TEST 22 : **********************************************************************/
+/*** check clear function ***********************************************************/
+/************************************************************************************/
+static bool	test_v22()
+{
+	std::vector<int, std::allocator<int> > realvector;
+	ft::vector<int, std::allocator<int> > my_vector;
+
+	for (size_t i = 0; i < 5; i++)
+	{
+		my_vector.push_back(i);
+		realvector.push_back(i);
+	}
+
+	realvector.clear();
+	my_vector.clear();
+
+	if (check_equal(my_vector, realvector))
+		return (FAIL);
+	return (SUCCESS);
+}
+
 
 bool ft_vector_test()
 {
@@ -508,6 +782,7 @@ bool ft_vector_test()
 	}
 	else
 		std::cout << "Test v14 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+
 	if (test_v15())
 	{
 		std::cout << "Test v15 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
@@ -515,6 +790,62 @@ bool ft_vector_test()
 	}
 	else
 		std::cout << "Test v15 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+
+	if (test_v16())
+	{
+		std::cout << "Test v16 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "Test v16 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+
+	if (test_v17())
+	{
+		std::cout << "Test v17 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "Test v17 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+
+	if (test_v18())
+	{
+		std::cout << "Test v18 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "Test v18 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+
+	if (test_v19())
+	{
+		std::cout << "Test v19 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "Test v19 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+
+	if (test_v20())
+	{
+		std::cout << "Test v20 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "Test v20 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+
+	if (test_v21())
+	{
+		std::cout << "Test v21 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "Test v21 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+
+	if (test_v22())
+	{
+		std::cout << "Test v21 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "Test v21 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
 	/*------------------------------------ End test ------------------------------------*/
 	std::cout << "\n\033[3;33m------- \033[3;34mEnd \033[3;32mVector \033[3;35mTest \033[3;33m-------\033[0m\n" << std::endl;
 

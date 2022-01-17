@@ -72,6 +72,17 @@ namespace ft
 			}
 		};
 
+		template <class InputIterator>
+		vector (InputIterator first, InputIterator last,Allocator alloc = Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type * = NULL) : _my_tab(NULL), _size_capacity(0), _size_element(0), alloc(alloc)
+		{
+			size_t nb_insert = last - first;
+
+			_my_tab = alloc.allocate(nb_insert);
+			_size_capacity = nb_insert;
+			for (size_type i = 0; i < nb_insert; i++)
+				push_back(*(first + i));
+		}
+
 		~vector()
 		{
 			destroy_tab();
@@ -106,25 +117,8 @@ namespace ft
 		/******************************************  Capacity ***********************************************************************/
 		/****************************************************************************************************************************/
 		size_t	size() const { return (_size_element); }
+
 		size_t	max_size() const {return (4611686018427387903);}
-		size_t	capacity() const { return (_size_capacity); }
-
-		bool	empty()
-		{
-			if (_size_element == 0)
-				return (true);
-			return (false);
-		}
-
-		void	reserve(size_t N)
-		{
-			if (N > max_size())
-				throw bad_alloc();
-			else if (N > _size_capacity)
-			{
-				my_realloc_size(N);
-			}
-		}
 
 		void	resize(size_t N, T value = T())
 		{
@@ -145,9 +139,32 @@ namespace ft
 			}
 		}
 
+		size_t	capacity() const { return (_size_capacity); }
+
+		bool	empty()
+		{
+			if (_size_element == 0)
+				return (true);
+			return (false);
+		}
+
+		void	reserve(size_t N)
+		{
+			if (N > max_size())
+				throw bad_alloc();
+			else if (N > _size_capacity)
+			{
+				my_realloc_size(N);
+			}
+		}
+
 		/****************************************************************************************************************************/
 		/******************************************  Element access *****************************************************************/
 		/****************************************************************************************************************************/
+
+		reference operator[](size_t index){ return (this->_my_tab[index]); }
+		const_reference operator[](size_t index) const { return (this->_my_tab[index]); }
+
 		reference	at(size_t index)
 		{
 			if (_size_element <= index)
@@ -162,9 +179,6 @@ namespace ft
 			else
 				return (_my_tab[index]);
 		}
-
-		reference operator[](size_t index){ return (this->_my_tab[index]); }
-		const_reference operator[](size_t index) const { return (this->_my_tab[index]); }
 
 		reference front() { return (_my_tab[0]);}
 		const_reference front() const { return (_my_tab[0]);}
@@ -185,9 +199,8 @@ namespace ft
 				T *tmp = alloc.allocate(size);
 				for (size_type i = 0; i < size; i++)
 				{
-					alloc.construct(&tmp[i], *first);
+					alloc.construct(&tmp[i], *(first + i));
 					alloc.destroy(&_my_tab[i]);
-					first++;
 				}
 				destroy_tab();
 				_my_tab = tmp;
@@ -269,21 +282,19 @@ namespace ft
 			{
 				alloc.construct(&_my_tab[i], _my_tab[i -1]);
 			}
-			_size_element += 1;
 			alloc.construct(&_my_tab[pos], val);
+			_size_element += 1;
 			return (iterator(&_my_tab[pos]));
 		}
 
 		void insert(iterator position, size_type n, const value_type& val)
 		{
-			size_t pos = 0;
-			if (_size_element > 0)
-				pos = position - begin();
-
+			size_t pos = position - begin();
 			if (_size_element + n > _size_capacity * 2)
 				my_realloc_size(_size_element + n);
 			else if (_size_element + n > _size_capacity)
 				my_realloc_size();
+
 			position = iterator(&_my_tab[pos]);
 			for (size_t i = 0; i < n; i++)
 			{
@@ -291,10 +302,73 @@ namespace ft
 			}
 		}
 
-		// template <class InputIterator>
-		// void insert (iterator position, InputIterator first, InputIterator last)
-		// {
-		// }
+		template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
+		{
+			size_t nb_insert = last - first;
+			size_t pos = position - begin();
+			if (_size_element + nb_insert > _size_capacity)
+				my_realloc_size();
+			else if (_size_element + nb_insert > _size_capacity * 2)
+				my_realloc_size(_size_element + nb_insert);
+
+			position = iterator(&_my_tab[pos]);
+			for (size_t i = nb_insert - 1; i > 0; i--)
+			{
+				position = insert(position, *(first + i));
+			}
+			position = insert(position, *first);
+		}
+
+		iterator erase (iterator position)
+		{
+			size_t pos = position - begin();
+			alloc.destroy(_my_tab + pos);
+			for (size_t i = pos; i < _size_element - 1; i++)
+			{
+				alloc.construct(&_my_tab[i], _my_tab[i + 1]);
+			}
+			_size_element--;
+			return (iterator(&_my_tab[pos]));
+		}
+
+		iterator erase (iterator first, iterator last)
+		{
+			size_t pos = first - begin();
+			size_t nb_element = last - first;
+
+			if (nb_element != 0)
+			{
+				for (size_t i = pos; i < nb_element; i++)
+				{
+					alloc.destroy(_my_tab + pos);
+				}
+				for (size_t i = pos; i < _size_element - nb_element; i++)
+				{
+					alloc.construct(&_my_tab[i], _my_tab[i + nb_element]);
+				}
+				_size_element -= nb_element;
+			}
+			return (iterator(first));
+		}
+
+		void swap (vector& x)
+		{
+			pointer		tmp_my_tab = _my_tab;
+			size_t		tmp_size_capacity = _size_capacity;
+			size_t		tmp_size_element = _size_element;
+			Allocator	tmp_alloc = alloc;
+
+			_my_tab = x._my_tab;
+			_size_capacity = x._size_capacity;
+			_size_element = x._size_element;
+			alloc = x.alloc;
+
+			x._my_tab = tmp_my_tab;
+			x._size_capacity = tmp_size_capacity;
+			x._size_element = tmp_size_element;
+			x.alloc = tmp_alloc;
+		}
 
 		void	clear()
 		{
@@ -311,7 +385,7 @@ namespace ft
 		Allocator get_allocator() const{ return (alloc); }
 
 		/****************************************************************************************************************************/
-		/******************************************  Non-member function overloads **************************************************/
+		/******************************************  My function utils **************************************************************/
 		/****************************************************************************************************************************/
 
 		void	destroy_tab()
@@ -358,7 +432,66 @@ namespace ft
 				_size_capacity = N;
 			}
 		}
+
 	};
+
+		/****************************************************************************************************************************/
+		/******************************************  Non-member function overloads **************************************************/
+		/****************************************************************************************************************************/
+
+		template <class T, class Alloc>
+		void swap (vector<T,Alloc>& x, vector<T,Alloc>& y)
+		{
+			x.swap(y);
+		}
+
+		template <class T, class Alloc>
+		bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
+			for (size_t i = 0; i < lhs.size(); i++)
+			{
+				if (lhs[i] != rhs[i])
+					return (false);
+			}
+			if (lhs.size() != rhs.size())
+				return (false);
+			return (true);
+		}
+
+		template <class T, class Alloc>
+		bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
+			if (!(lhs == rhs))
+				return true;
+			return false;
+		}
+
+		template <class T, class Alloc>
+		bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+			return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		}
+
+		template <class T, class Alloc>
+		bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+			if (ft::equal(lhs.begin(), lhs.end(), rhs.begin()))
+				return true;
+			return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		}
+
+		template <class T, class Alloc>
+		bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+			if (ft::equal(lhs.begin(), lhs.end(), rhs.begin()))
+				return false;
+			return !ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		}
+
+		template <class T, class Alloc>
+		bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+			if (lhs == rhs)
+				return true;
+			return !ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		}
 }
+
 
 #endif
