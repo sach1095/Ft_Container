@@ -18,5 +18,15 @@ int main()
 		std::cout << "Error in stack test" << std::endl;
 		return (EXIT_FAILURE);
 	}
+
+	std::cout << "----------------------------------------------------------------" << std::endl;
+	std::cout << "------------------- Finish Stack Congratulation ---------------" << std::endl;
+	std::cout << "----------------------------------------------------------------\n" << std::endl;
+
+	if ((ft_map_test()) != SUCCESS)
+	{
+		std::cout << "Error in stack test" << std::endl;
+		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }

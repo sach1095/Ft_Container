@@ -843,11 +843,11 @@ bool ft_vector_test()
 
 	if (test_v22())
 	{
-		std::cout << "Test v21 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		std::cout << "Test v22 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
 		return (FAIL);
 	}
 	else
-		std::cout << "Test v21 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+		std::cout << "Test v22 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
 	/*------------------------------------ End test ------------------------------------*/
 	std::cout << "\n\033[3;33m------- \033[3;34mEnd \033[3;32mVector \033[3;35mTest \033[3;33m-------\033[0m\n" << std::endl;
 

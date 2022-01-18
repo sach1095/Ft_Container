@@ -15,10 +15,12 @@ namespace ft
 		typedef typename allocator_type::const_reference const_reference;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
-		typedef typename ft::My_Iterator<pointer> iterator;
-		typedef typename ft::My_Iterator<const_pointer> const_iterator;
-		typedef typename ft::reverse_iterator<iterator> reverse_iterator;
-		typedef typename ft::reverse_iterator<const_iterator> const_reverse_iterator;
+
+		typedef ft::RandomAccessIterator<value_type> 			iterator;
+		typedef ft::RandomAccessIterator<const value_type>	const_iterator;
+		typedef ft::reverse_iterator<iterator>				reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+
 		typedef std::ptrdiff_t difference_type;
 		typedef std::size_t size_type;
 
@@ -109,7 +111,7 @@ namespace ft
 		/****************************************************************************************************************************/
 		size_t	size() const { return (_size_element); }
 
-		size_t	max_size() const {return (4611686018427387903);}
+		size_t	max_size() const {return alloc.max_size();}
 
 		void	resize(size_t N, T value = T())
 		{
