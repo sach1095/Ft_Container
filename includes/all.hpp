@@ -22,7 +22,9 @@
 # include "../includes/is_integral.hpp"
 # include "../includes/All_Iterator.hpp"
 # include "../includes/vector.hpp"
+# include "../includes/stack.hpp"
 
 bool	ft_vector_test();
+bool	ft_stack_test();
 
 #endif

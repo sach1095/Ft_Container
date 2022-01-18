@@ -1,5 +1,7 @@
 # include "../includes/all.hpp"
 
+#include <vector>
+
 static bool check_equal(ft::vector<int, std::allocator<int> > &my_vector, std::vector<int, std::allocator<int> > &realvector)
 {
 	int i = 0;

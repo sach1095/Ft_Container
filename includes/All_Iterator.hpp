@@ -1,6 +1,8 @@
 #ifndef _ALL_ITERATOR_HPP_
 # define _ALL_ITERATOR_HPP_
 
+#pragma once
+
 namespace ft {
 
     struct input_iterator_tag {};

@@ -49,26 +49,17 @@ namespace ft
 		/****************************************************************************************************************************/
 		/******************************************  Member functions ***************************************************************/
 		/****************************************************************************************************************************/
-		vector(Allocator alloc = Allocator()) : _my_tab(NULL), _size_capacity(0), _size_element(0), alloc(alloc)
+		explicit vector(Allocator alloc = Allocator()) : _my_tab(NULL), _size_capacity(0), _size_element(0), alloc(alloc)
 		{
 			_my_tab = NULL;
 		};
 
-		vector(size_t N, Allocator alloc = Allocator()) :_my_tab(NULL), _size_capacity(N), _size_element(N), alloc(alloc)
+		explicit vector(size_t N, const value_type& val = T(), Allocator alloc = Allocator()) :_my_tab(NULL), _size_capacity(N), _size_element(N), alloc(alloc)
 		{
 			_my_tab = alloc.allocate(N);
 			for (size_t i = 0; i < N; i++)
 			{
-				alloc.construct(&_my_tab[i], T());
-			}
-		};
-
-		vector(size_t N, T element, Allocator alloc = Allocator()) :_my_tab(NULL), _size_capacity(N), _size_element(N), alloc(alloc)
-		{
-			_my_tab = alloc.allocate(N);
-			for (size_t i = 0; i < N; i++)
-			{
-				alloc.construct(&_my_tab[i], element);
+				alloc.construct(&_my_tab[i], val);
 			}
 		};
 
@@ -141,7 +132,7 @@ namespace ft
 
 		size_t	capacity() const { return (_size_capacity); }
 
-		bool	empty()
+		bool	empty() const
 		{
 			if (_size_element == 0)
 				return (true);
@@ -467,26 +458,30 @@ namespace ft
 		}
 
 		template <class T, class Alloc>
-		bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+		bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
 			return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 		}
 
 		template <class T, class Alloc>
-		bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+		bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
 			if (ft::equal(lhs.begin(), lhs.end(), rhs.begin()))
 				return true;
 			return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 		}
 
 		template <class T, class Alloc>
-		bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+		bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
 			if (ft::equal(lhs.begin(), lhs.end(), rhs.begin()))
 				return false;
 			return !ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 		}
 
 		template <class T, class Alloc>
-		bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+		bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
 			if (lhs == rhs)
 				return true;
 			return !ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
