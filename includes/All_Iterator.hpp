@@ -297,14 +297,15 @@ namespace ft {
 			typedef std::bidirectional_iterator_tag	iterator_category;
 
 			NodeIterator():_it(NULL) {};
-			NodeIterator(node_ptr it, node_ptr root):_it(it), _root(root) {};
+			NodeIterator(node_ptr it, node_ptr first):_it(it), _first(first) {};
 			~NodeIterator() {};
-			NodeIterator (NodeIterator const& other): _it(other._it), _root(other._root) {};
+			NodeIterator (NodeIterator const& other): _it(other._it), _first(other._first) {};
+
 			NodeIterator &operator=(NodeIterator const& other) {
 				if (this != &other)
 				{
 					_it = other._it;
-					_root = other._root;
+					_first = other._first;
 				}
 				return *this; 
 			};
@@ -331,10 +332,10 @@ namespace ft {
 				if (_it != NULL)
 					_it = _go_to_befor();
 				else
-					_it = _go_to_max(_root);
+					_it = _go_to_max(_first);
 				return *this;
 			}
-	
+
 			NodeIterator operator--(int)
 			{
 				NodeIterator tmp(*this);
@@ -349,7 +350,7 @@ namespace ft {
 
 		private:
 			node_ptr _it;
-			node_ptr _root;
+			node_ptr _first;
 
 			node_ptr _go_to_min(node_ptr n)
 			{
@@ -372,7 +373,7 @@ namespace ft {
 
 				if (n->right != NULL)
 					return _go_to_min(n->right);
-				
+
 				next = n->parent;
 				while (next != NULL && n == next->right)
 				{

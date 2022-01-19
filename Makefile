@@ -27,12 +27,15 @@ HEADER =	$(I)all.hpp \
 			$(I)is_integral.hpp \
 			$(I)lecxico_equal.hpp \
 			$(I)pair.hpp \
+			$(I)map_iterator.hpp \
+			$(I)map.hpp \
 			$(I)stack.hpp \
 			$(I)vector.hpp
 
 S = ./srcs/
 SRCS =	$(S)main.cpp \
 		$(S)test_vector.cpp \
+		$(S)test_map.cpp \
 		$(S)test_stack.cpp
 
 CC = clang++
