@@ -55,11 +55,14 @@ namespace ft
 
 	public:
 
-		// explicit map (const key_compare& comp = key_compare(),
-		// 	const allocator_type& alloc = allocator_type())
-		// {
+		explicit map (const key_compare& comp = key_compare(),
+		const allocator_type& alloc = allocator_type()): _alloc(alloc), _comp(comp) {};
 
-		// }
+		pair<iterator,bool> insert (const value_type& val)
+		{
+			val.
+			_map.insert(val);
+		}
 
 		/****************************************************************************************************************************/
 		/******************************************  Member functions ***************************************************************/

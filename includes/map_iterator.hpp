@@ -34,14 +34,14 @@ namespace ft {
 			size_type size() const {return _size;}
 			size_type	max_size() const {return _alloc.max_size();}
 
+			node_ptr	getFirst() const {return _first;}
+			size_type	getSize() const {return _size;}
 
 		private:
 			node_ptr		_first;
 			size_type		_size;
-			allocator_type	_alloc;
 			key_compare		_comp;
-
-			
+			allocator_type	_alloc;
 
 			node_ptr _new_node(const value_type &val)
 			{

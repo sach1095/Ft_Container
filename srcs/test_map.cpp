@@ -25,27 +25,37 @@
 /*** TEST 1 : ***********************************************************************/
 /*** create stack no args and check size and check last element *********************/
 /************************************************************************************/
-// static bool	test_v1()
-// {
-// 	// std::map<char,int> realmap;
-// 	// ft::map<char, int> my_map;
+static bool	test_v1()
+{
+	std::map<int,int> realmap;
+	// ft::map<int, int> my_map;
 
-// 	if (check_equal(my_map, realmap))
-// 		return (FAIL);
-// 	return (SUCCESS);
-// }
+	realmap[0] = 50;
+	realmap[1] = 20;
+	realmap[3] = 40;
+	// realmap[2] = 30;
+	realmap[1] = 10;
+
+	realmap.insert(realmap.begin()+2 , std::pair<int,int>(0,100));
+
+	for ( std::map<int,int>::iterator it=realmap.begin(); it!=realmap.end(); ++it)
+		std::cout << it->first << " => " << it->second << '\n';
+	// if (check_equal(my_map, realmap))
+	// 	return (FAIL);
+	return (SUCCESS);
+}
 
 bool ft_map_test()
 {
 	std::cout << "\033[3;33m------- \033[3;34mStart \033[3;32mMap \033[3;35mTest \033[3;33m-------\033[0m\n" << std::endl;
-	// /*------------------------------------ test v1 ------------------------------------*/
-	// if (test_v1())
-	// {
-	// 	std::cout << "-----------------\nTest v1 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
-	// 	return (FAIL);
-	// }
-	// else
-	// 	std::cout << "-----------------\nTest v1 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+	/*------------------------------------ test v1 ------------------------------------*/
+	if (test_v1())
+	{
+		std::cout << "-----------------\nTest v1 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "-----------------\nTest v1 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
 
 	// if (test_v2())
 	// {
