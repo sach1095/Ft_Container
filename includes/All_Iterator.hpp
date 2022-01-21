@@ -280,10 +280,12 @@ namespace ft {
 		node		*parent;
 
 		node(value_type const &src) : data(src), left(NULL), right(NULL), parent(NULL) {}
+		node(value_type const &src, node *l, node *r, node *p) : data(src), left(l), right(r), parent(p) {}
+		node(node *l, node *r, node *p) : left(l), right(r), parent(p) {}
 	};
 
 	template < class T >
-	class NodeIterator{
+	class TreeIterator{
 		public:
 
 			typedef T								value_type;
@@ -296,12 +298,12 @@ namespace ft {
 			typedef ptrdiff_t						difference_type;
 			typedef std::bidirectional_iterator_tag	iterator_category;
 
-			NodeIterator():_it(NULL) {};
-			NodeIterator(node_ptr it, node_ptr first):_it(it), _first(first) {};
-			~NodeIterator() {};
-			NodeIterator (NodeIterator const& other): _it(other._it), _first(other._first) {};
+			TreeIterator():_it(NULL) {};
+			TreeIterator(node_ptr it, node_ptr first):_it(it), _first(first) {};
+			~TreeIterator() {};
+			TreeIterator (TreeIterator const& other): _it(other._it), _first(other._first) {};
 
-			NodeIterator &operator=(NodeIterator const& other) {
+			TreeIterator &operator=(TreeIterator const& other) {
 				if (this != &other)
 				{
 					_it = other._it;
@@ -313,21 +315,21 @@ namespace ft {
 			reference operator*() {return _it->data;}
 			pointer operator->() const {return &_it->data;}
 
-			NodeIterator &operator++()
+			TreeIterator &operator++()
 			{
 				if (_it != NULL)
 					_it = _go_to_next();
 				return *this;
 			}
 
-			NodeIterator operator++(int)
+			TreeIterator operator++(int)
 			{
-				NodeIterator tmp(*this);
+				TreeIterator tmp(*this);
 				++(*this);
 				return tmp;
 			}
 
-			NodeIterator &operator--()
+			TreeIterator &operator--()
 			{
 				if (_it != NULL)
 					_it = _go_to_befor();
@@ -336,15 +338,15 @@ namespace ft {
 				return *this;
 			}
 
-			NodeIterator operator--(int)
+			TreeIterator operator--(int)
 			{
-				NodeIterator tmp(*this);
+				TreeIterator tmp(*this);
 				--(*this);
 				return tmp;
 			}
 
-			bool	operator!=(NodeIterator const& a){return (a._it != _it);};
-			bool	operator==(NodeIterator const& a){return (a._it == _it);};
+			bool	operator!=(TreeIterator const& a){return (a._it != _it);};
+			bool	operator==(TreeIterator const& a){return (a._it == _it);};
 
 			node_ptr getCurrent () const { return _it; }
 
