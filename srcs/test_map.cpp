@@ -1,7 +1,5 @@
 # include "../includes/all.hpp"
 
-# include <map>
-
 static bool check_equal(ft::map<int, int> &my_map, std::map<int,int> &realmap)
 {
 	std::cout << "-----------------\nrealmap :" << std::endl;
@@ -383,7 +381,153 @@ static bool	test_v12()
 	return (SUCCESS);
 }
 
+/*************************************************************************************/
+/*** TEST 13 : ***********************************************************************/
+/*** create map and insert 3 element and try operator [] *****************************/
+/*************************************************************************************/
+static bool	test_v13()
+{
+	
+	std::map<int,int>			realmap;
+	ft::map<int,int>			my_map;
 
+	realmap[0]= 10;
+	realmap[1]= 20;
+	realmap[3]= 30;
+
+	my_map[0]= 10;
+	my_map[1]= 20;
+	my_map[3]= 30;
+
+	if (check_equal(my_map, realmap))
+		return (FAIL);
+	return (SUCCESS);
+}
+
+/*************************************************************************************/
+/*** TEST 14 : ***********************************************************************/
+/*** create map and insert 3 element and erase the midle *****************************/
+/*************************************************************************************/
+static bool	test_v14()
+{
+	std::map<int,int>			realmap;
+	ft::map<int,int>			my_map;
+
+	realmap[0]= 10;
+	realmap[1]= 20;
+	realmap[3]= 30;
+
+	my_map[0]= 10;
+	my_map[1]= 20;
+	my_map[3]= 30;
+
+	realmap.erase(1);
+	my_map.erase(1);
+
+	if (check_equal(my_map, realmap))
+		return (FAIL);
+	return (SUCCESS);
+}
+
+/*************************************************************************************/
+/*** TEST 15 : ***********************************************************************/
+/*** create map and insert 3 element and erase witch it ******************************/
+/*************************************************************************************/
+static bool	test_v15()
+{
+	std::map<int,int>			realmap;
+	std::map<int,int>::iterator	it;
+
+	ft::map<int,int>			my_map;
+	ft::map<int,int>::iterator	mit;
+	realmap[0]= 10;
+	realmap[1]= 20;
+	realmap[3]= 30;
+
+	my_map[0]= 10;
+	my_map[1]= 20;
+	my_map[3]= 30;
+
+	it = realmap.find(1);
+	if (it != realmap.end())
+		realmap.erase(it);
+
+	mit = my_map.find(1);
+	if (mit != my_map.end())
+		my_map.erase(mit);
+
+	if (check_equal(my_map, realmap))
+		return (FAIL);
+	return (SUCCESS);
+}
+
+/*************************************************************************************/
+/*** TEST 16 : ***********************************************************************/
+/*** create map and insert 3 element and erase witch it ******************************/
+/*************************************************************************************/
+static bool	test_v16()
+{
+	std::map<int,int>					realmap;
+	std::map<int,int>::iterator			it;
+
+	ft::map<int,int>					my_map;
+	ft::map<int,int>::iterator			mit;
+
+	realmap[0]= 10;
+	realmap[1]= 20;
+	realmap[2]= 25;
+	realmap[3]= 30;
+	realmap[4]= 40;
+
+	my_map[0]= 10;
+	my_map[1]= 20;
+	my_map[2]= 25;
+	my_map[3]= 30;
+	my_map[4]= 40;
+
+	it = realmap.find(3);
+	realmap.erase(it, realmap.end());
+	mit = my_map.find(3);
+	my_map.erase(mit, my_map.end());
+
+	if (check_equal(my_map, realmap))
+		return (FAIL);
+	return (SUCCESS);
+}
+
+/*************************************************************************************/
+/*** TEST 17 : ***********************************************************************/
+/*** create map and insert 3 element and erase witch range it ************************/
+/*************************************************************************************/
+static bool	test_v17()
+{
+	std::map<int,int>					realmap;
+	std::map<int,int>::iterator			it;
+
+	ft::map<int,int>					my_map;
+	ft::map<int,int>::iterator			mit;
+
+	realmap[0]= 10;
+	realmap[1]= 20;
+	realmap[2]= 25;
+	realmap[3]= 30;
+	realmap[4]= 40;
+
+	my_map[0]= 10;
+	my_map[1]= 20;
+	my_map[2]= 25;
+	my_map[3]= 30;
+	my_map[4]= 40;
+
+	it = realmap.find(3);
+	realmap.erase(it, realmap.end());
+	mit = my_map.find(3);
+	my_map.erase(mit, my_map.end());
+
+	if (check_equal(my_map, realmap))
+		return (FAIL);
+	return (SUCCESS);
+}
 
 bool ft_map_test()
 {
@@ -484,6 +628,46 @@ bool ft_map_test()
 	}
 	else
 		std::cout << "-----------------\nTest v12 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+
+	if (test_v13())
+	{
+		std::cout << "-----------------\nTest v13 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "-----------------\nTest v13 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+
+	if (test_v14())
+	{
+		std::cout << "-----------------\nTest v14 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "-----------------\nTest v14 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+
+	if (test_v15())
+	{
+		std::cout << "-----------------\nTest v15 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "-----------------\nTest v15 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+	
+	if (test_v16())
+	{
+		std::cout << "-----------------\nTest v16 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "-----------------\nTest v16 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+	
+	if (test_v17())
+	{
+		std::cout << "-----------------\nTest v17 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "-----------------\nTest v17 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
 
 	/*------------------------------------ End test ------------------------------------*/
 	std::cout << "\n\033[3;33m------- \033[3;34mEnd \033[3;32mMap \033[3;35mTest \033[3;33m-------\033[0m\n" << std::endl;

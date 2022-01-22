@@ -44,5 +44,15 @@ int main()
 		std::cout << "Error in stack test" << std::endl;
 		return (EXIT_FAILURE);
 	}
+
+	std::cout << "----------------------------------------------------------------" << std::endl;
+	std::cout << "------------------- Finish Map Congratulation -----------------" << std::endl;
+	std::cout << "----------------------------------------------------------------\n" << std::endl;
+
+	if ((ft_map_speed_test()) != SUCCESS)
+	{
+		std::cout << "Error in speed test" << std::endl;
+		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }

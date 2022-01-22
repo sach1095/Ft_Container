@@ -1,7 +1,5 @@
 # include "../includes/all.hpp"
 
-# include <stack>
-
 typedef size_t	Index;
 
 static void the_display( std::stack<int, std::vector<int> > const& numbers )

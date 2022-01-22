@@ -7,7 +7,6 @@
 # define FAIL 1
 
 # include <iostream>
-# include <vector>
 # include <memory>
 # include <sys/time.h>
 # include <ctime>
@@ -20,6 +19,14 @@
 # include <limits.h>
 # include <istream>
 # include <iomanip>
+# include <cstring>
+# include <cmath>
+# include <sstream>
+# include <string>
+# include <cctype>
+# include <vector>
+# include <stack>
+# include <map>
 
 typedef unsigned long long uint64;
 
@@ -38,5 +45,6 @@ uint64	get_time(void);
 bool	ft_vector_test();
 bool	ft_stack_test();
 bool	ft_map_test();
+bool	ft_map_speed_test();
 
 #endif

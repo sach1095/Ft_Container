@@ -36,6 +36,7 @@ S = ./srcs/
 SRCS =	$(S)main.cpp \
 		$(S)test_vector.cpp \
 		$(S)test_map.cpp \
+		$(S)test_map_speed_test.cpp \
 		$(S)test_stack.cpp
 
 CC = clang++
@@ -55,7 +56,7 @@ $(NAME):	$(OBJS) $(HEADER)
 	@printf "\033[2K\r$(BLUE)$(NAME)$(RESET)$(BLUEE): $(ICONOK)Compiled [√]$(RESET)\n"
 
 start:
-		@make ; ./a.out
+		@make && ./a.out
 
 clean:
 	@$(RM) $(OBJS)

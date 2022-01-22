@@ -81,7 +81,7 @@ namespace ft {
 		/****************************************************************************************************************************/
 		/******************************************  Capacity ***********************************************************************/
 		/****************************************************************************************************************************/
-		
+
 		bool empty() const {return (_size == 0);}
 		size_type size() const {return _size;}
 		size_type	max_size() const {return (461168601842738790);}
@@ -135,15 +135,23 @@ namespace ft {
 				return insert(val, _first).first;
 		}
 
-		// void	erase(iterator position)
-		// {
+		void	erase(iterator position)
+		{
+			node_ptr tmp = find(*position);
+			if (!tmp)
+				return ;
+			_remove(tmp);
+		}
 
-		// }
-
-		// size_type erase(value_type const &k)
-		// {
-
-		// }
+		size_type erase(value_type const &k)
+		{
+			node_ptr tmp = find(k);
+			if (tmp)
+				_remove(tmp);
+			else
+				return 0;
+			return 1;
+		}
 
 		void swap (MyTree& x){
 			node_ptr		tmp_first = _first;
@@ -213,6 +221,104 @@ namespace ft {
 				ret->parent = NULL;
 
 				return ret;
+			}
+
+			void	_remove(node_ptr to_remove)
+			{
+				node_ptr save;
+
+				if (to_remove->right && to_remove->left) // two children
+				{
+					if (_comp(to_remove->data.first, _first->data.first)) // left side
+					{
+						save = _min(to_remove->right);
+						node_ptr buf = save->parent;
+						save->parent = to_remove->parent;
+						save->left = to_remove->left;
+						to_remove->parent->left = save;
+						to_remove->left->parent = save;
+
+						if (to_remove->right != save)
+						{
+							save->right = to_remove->right;
+							to_remove->right->parent = save;
+							if (buf != to_remove)
+								buf->left = NULL;
+						}
+					}
+					else // right side
+					{
+						save = _max(to_remove->left);
+
+						node_ptr buf = save->parent;
+						save->parent = to_remove->parent;
+						save->right = to_remove->right;
+							
+						to_remove->right->parent = save;
+						if (to_remove->parent)
+							to_remove->parent->left = save;
+						if (to_remove->left != save)
+						{
+							save->left = to_remove->left;
+							to_remove->left->parent = save;
+
+							if (buf != to_remove)
+								buf->right = NULL;
+						}
+						if (save->parent == NULL)
+							_first = save;
+						
+					}
+				}
+				else if (to_remove->left) // if he have one child
+				{
+					save = to_remove->left;
+
+					if (to_remove->parent)
+					{
+						save->parent = to_remove->parent;
+						if (to_remove == to_remove->parent->right)
+							to_remove->parent->right = save;
+						else if (to_remove == to_remove->parent->left)
+							to_remove->parent->left = save;
+					}
+					else
+					{
+						save->parent = NULL;
+						_first = save;
+					}
+				}
+				else if (to_remove->right)
+				{
+					save = to_remove->right;
+
+					if (to_remove->parent)
+					{
+						save->parent = to_remove->parent;
+						if (to_remove == to_remove->parent->right)
+							to_remove->parent->right = save;
+						else if (to_remove == to_remove->parent->left)
+							to_remove->parent->left = save;
+					}
+					else
+					{
+						save->parent = NULL;
+						_first = save;
+					}
+				}
+				else // if no children
+				{
+					if (to_remove != _first)
+					{
+						if (to_remove == to_remove->parent->right)
+							to_remove->parent->right = NULL;
+						else if (to_remove == to_remove->parent->left)
+							to_remove->parent->left = NULL;
+					}
+				}
+				_alloc.destroy(to_remove);
+				_alloc.deallocate(to_remove, 1);
+				_size--;
 			}
 
 			void	_CopyAll(MyTree &dest, node_ptr copy)
