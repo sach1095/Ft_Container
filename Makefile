@@ -43,7 +43,7 @@ CC = clang++
 
 OBJS = $(SRCS:.cpp=.o)
 
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror # -g3 -fsanitize=address
 
 all:	$(NAME)
 
@@ -56,7 +56,7 @@ $(NAME):	$(OBJS) $(HEADER)
 	@printf "\033[2K\r$(BLUE)$(NAME)$(RESET)$(BLUEE): $(ICONOK)Compiled [√]$(RESET)\n"
 
 start:
-		@make && ./a.out
+		@make && time ./a.out
 
 clean:
 	@$(RM) $(OBJS)

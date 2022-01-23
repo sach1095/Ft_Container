@@ -3,8 +3,8 @@
 
 #pragma once
 
-namespace ft {
-
+namespace ft
+{
 	template <class T, class Compare, class Alloc = std::allocator<node<T> > >
 	class MyTree
 	{

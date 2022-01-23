@@ -1,8 +1,9 @@
 #ifndef _PAIR_HPP
 #define _PAIR_HPP
 
-namespace ft {
-		template <class T1, class T2> 
+namespace ft
+{
+	template <class T1, class T2> 
 	struct pair
 	{
 		typedef T1	first_type;

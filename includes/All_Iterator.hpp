@@ -3,8 +3,8 @@
 
 #pragma once
 
-namespace ft {
-
+namespace ft
+{
 	template <class Iterator> class iterator_traits
 	{
 		public:

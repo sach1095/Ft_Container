@@ -1,24 +1,10 @@
 # include "../includes/all.hpp"
 
 # define NB_TO_ERASE 49
-# define ON_MILI / 100
+# define ON_MILI / 1000
 # define SIZE_TAB_INSERT 1000000
 
-static uint64 tab_dico[SIZE_TAB_INSERT];
-static uint64 index_dico = 0;
-
-bool	is_exist(uint64 key)
-{
-	for (size_t i = 0; i < index_dico; i++)
-	{
-		if (key == tab_dico[i])
-			return 1;
-	}
-	tab_dico[index_dico] = key;
-	index_dico++;
-	return 0;
-}
-
+// static uint64 tab_dico[SIZE_TAB_INSERT];
 
 static bool check_equal(ft::map<int, int> &my_map, std::map<int,int> &realmap)
 {
@@ -62,6 +48,14 @@ static bool check_equal(ft::map<int, int> &my_map, std::map<int,int> &realmap)
 		mrit++;
 	}
 
+	mit = my_map.begin();
+	for (std::map<int,int>::iterator it = realmap.begin(); it != realmap.begin(); it++)
+	{
+		if (mit->first != it->first && mit->second != it->second)
+			return (FAIL);
+		mit++;
+	}
+
 	if (my_map.size() != realmap.size())
 		return (FAIL);
 	return (SUCCESS);
@@ -70,7 +64,7 @@ static bool check_equal(ft::map<int, int> &my_map, std::map<int,int> &realmap)
 void test_real_map(std::map<int, int> &realmap, uint64 *tab_key, uint64 *tab_value, uint64 *tab_to_erase)
 {
 	// test insert SIZE_TAB_INSERT elements
-	for (size_t i = 0; i < index_dico; i++)
+	for (size_t i = 0; i < SIZE_TAB_INSERT - 1; i++)
 	{
 		realmap.insert(realmap.begin(), std::pair<int, int>(tab_key[i], tab_value[i]));
 	}
@@ -98,7 +92,7 @@ void test_real_map(std::map<int, int> &realmap, uint64 *tab_key, uint64 *tab_val
 void test_my_map(ft::map<int, int> &my_map, uint64 *tab_key, uint64 *tab_value, uint64 *tab_to_erase)
 {
 	// test insert SIZE_TAB_INSERT elements
-	for (size_t i = 0; i < index_dico; i++)
+	for (size_t i = 0; i < SIZE_TAB_INSERT - 1; i++)
 	{
 		my_map.insert(ft::pair<int,int>(tab_key[i], tab_value[i]));
 	}
@@ -130,16 +124,19 @@ bool ft_map_speed_test()
 	std::map<int, int> realmap;
 	ft::map<int, int> my_map;
 
-	uint64 tab_key[SIZE_TAB_INSERT];
-	uint64 tab_value[SIZE_TAB_INSERT];
+	uint64 *tab_key = NULL;
+	uint64 *tab_value = NULL;
 	uint64 tab_to_erase[50];
 	uint64 key_to_insert = 0;
-	
-	for (size_t i = 0; i < (1000); i++)
+
+	if ((!(tab_key = (uint64*)malloc(sizeof(uint64) * (SIZE_TAB_INSERT + 1)))) || (!(tab_value = (uint64*)malloc(sizeof(uint64) * SIZE_TAB_INSERT + 1))))
+	{
+		std::cout << "error malloc no engout space" << std::endl;
+		return (FAIL);
+	}
+	for (size_t i = 0; i < (SIZE_TAB_INSERT - 1); i++)
 	{
 		key_to_insert = rand() % SIZE_TAB_INSERT * 5;
-		while (is_exist(key_to_insert))
-			key_to_insert = rand() % SIZE_TAB_INSERT * 5;
 		tab_key[i] = key_to_insert;
 		tab_value[i] = rand() % SIZE_TAB_INSERT * 5;
 	}
@@ -159,8 +156,10 @@ bool ft_map_speed_test()
 	test_my_map(my_map, tab_key, tab_value, tab_to_erase);
 	uint64 time_my_map = get_time() - start;
 
-	printf("test %.2f miliseconde and %.2f miliseconde.\n", (double)time_real_map ON_MILI, (double)time_my_map ON_MILI);
+	printf("test %.5f seconde and %.5f seconde.\n", (double)time_real_map ON_MILI, (double)time_my_map ON_MILI);
 
+	free(tab_key);
+	free(tab_value);
 	if (time_real_map > (time_my_map * 20))
 	{
 		std::cout << "Your map are to slow" << std::endl;
