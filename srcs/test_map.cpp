@@ -529,6 +529,95 @@ static bool	test_v17()
 	return (SUCCESS);
 }
 
+/*************************************************************************************/
+/*** TEST 18 : ***********************************************************************/
+/*** create map and insert 3 element and erase witch range it ************************/
+/*************************************************************************************/
+static bool	test_v18()
+{
+	std::map<int,int>					realmap;
+	std::map<int,int>::iterator			itlow, itup;
+
+	ft::map<int,int>					my_map;
+	ft::map<int,int>::iterator			mitlow, mitup;
+
+	realmap[0]= 10;
+	realmap[1]= 20;
+	realmap[2]= 25;
+	realmap[3]= 30;
+	realmap[4]= 40;
+
+	my_map[0]= 10;
+	my_map[1]= 20;
+	my_map[2]= 25;
+	my_map[3]= 30;
+	my_map[4]= 40;
+
+	itlow = realmap.lower_bound(1);
+	mitlow = my_map.lower_bound(1);
+
+	itup = realmap.upper_bound(2);
+	mitup = my_map.upper_bound(2);
+
+	std::cout << "real lower is = " << itlow->first;
+	std::cout << "\nreal upper is = " << itup->first;
+
+	std::cout << "\n\nmy lower is = " << mitlow->first;
+	std::cout << "\nmy upper is = " << mitup->first << std::endl;
+
+	if (itlow->first != mitlow->first)
+		return (FAIL);
+	if (itup->first != mitup->first)
+		return (FAIL);
+
+	if (check_equal(my_map, realmap))
+		return (FAIL);
+	return (SUCCESS);
+}
+
+/*************************************************************************************/
+/*** TEST 19 : ***********************************************************************/
+/*** create map and insert 3 element and erase witch range it ************************/
+/*************************************************************************************/
+static bool	test_v19()
+{
+	std::map<int,int>														realmap;
+	std::pair<std::map<int,int>::iterator,std::map<int,int>::iterator>	it;
+
+	ft::map<int,int>														my_map;
+	ft::pair<ft::map<int,int>::iterator,ft::map<int,int>::iterator>		mit;
+
+	realmap[0]= 10;
+	realmap[1]= 20;
+	realmap[2]= 25;
+	realmap[3]= 30;
+	realmap[4]= 40;
+
+	my_map[0]= 10;
+	my_map[1]= 20;
+	my_map[2]= 25;
+	my_map[3]= 30;
+	my_map[4]= 40;
+
+	it = realmap.equal_range(1);
+	mit = my_map.equal_range(1);
+
+	std::cout << "Real equal first is = " << it.first->first << " => " << it.first->second;
+	std::cout << "\nReal equal second is = " << it.second->first << " => " << it.second->second;
+
+	std::cout << "\n\nMy equal first is = " << mit.first->first << " => " << mit.first->second;
+	std::cout << "\nMy equal second is = " << mit.second->first << " => " << mit.second->second << std::endl;
+
+	if ((it.first->first != mit.first->first) && (it.first->second != mit.first->second))
+		return (FAIL);
+	if ((it.second->first != mit.second->first) && (it.second->second != mit.second->second))
+		return (FAIL);
+
+	if (check_equal(my_map, realmap))
+		return (FAIL);
+	return (SUCCESS);
+}
+
 bool ft_map_test()
 {
 	std::cout << "\033[3;33m------- \033[3;34mStart \033[3;32mMap \033[3;35mTest \033[3;33m-------\033[0m\n" << std::endl;
@@ -652,7 +741,7 @@ bool ft_map_test()
 	}
 	else
 		std::cout << "-----------------\nTest v15 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
-	
+
 	if (test_v16())
 	{
 		std::cout << "-----------------\nTest v16 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
@@ -660,7 +749,7 @@ bool ft_map_test()
 	}
 	else
 		std::cout << "-----------------\nTest v16 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
-	
+
 	if (test_v17())
 	{
 		std::cout << "-----------------\nTest v17 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
@@ -668,6 +757,22 @@ bool ft_map_test()
 	}
 	else
 		std::cout << "-----------------\nTest v17 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+
+	if (test_v18())
+	{
+		std::cout << "-----------------\nTest v18 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "-----------------\nTest v18 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
+
+	if (test_v19())
+	{
+		std::cout << "-----------------\nTest v19 : \033[1;31m[X]\033[0m\n-----------------\n" << std::endl;
+		return (FAIL);
+	}
+	else
+		std::cout << "-----------------\nTest v19 : \033[1;32m[√]\033[0m\n-----------------\n" << std::endl;
 
 	/*------------------------------------ End test ------------------------------------*/
 	std::cout << "\n\033[3;33m------- \033[3;34mEnd \033[3;32mMap \033[3;35mTest \033[3;33m-------\033[0m\n" << std::endl;

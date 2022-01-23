@@ -1,5 +1,5 @@
-#ifndef _MAP_ITERATOR_HPP_
-# define _MAP_ITERATOR_HPP_
+#ifndef _MAP_TREE_HPP_
+# define _MAP_TREE_HPP_
 
 #pragma once
 
@@ -137,17 +137,17 @@ namespace ft
 
 		void	erase(iterator position)
 		{
-			node_ptr tmp = find(*position);
-			if (!tmp)
+			node_ptr save = find(*position);
+			if (!save)
 				return ;
-			_remove(tmp);
+			_remove(save);
 		}
 
 		size_type erase(value_type const &k)
 		{
-			node_ptr tmp = find(k);
-			if (tmp)
-				_remove(tmp);
+			node_ptr save = find(k);
+			if (save)
+				_remove(save);
 			else
 				return 0;
 			return 1;
@@ -202,6 +202,66 @@ namespace ft
 			if (find(val))
 				return 1;
 			return 0;
+		}
+
+		iterator lower_bound(const value_type &k)
+		{
+			iterator it = begin();
+			node_ptr save;
+
+			while (it != end())
+			{
+				save = it.getCurrent();
+				if (_comp(k.first, save->data.first) || (!_comp(k.first, save->data.first) && !_comp(save->data.first, k.first)))
+					return it;
+				it++;
+			}
+			return it;
+		}
+
+		const_iterator lower_bound(const value_type &k) const
+		{
+			iterator it = begin();
+			node_ptr save;
+
+			while (it != end())
+			{
+				save = it.getCurrent();
+				if (_comp(k.first, save->data.first) || (!_comp(k.first, save->data.first) && !_comp(save->data.first, k.first)))
+					return it;
+				it++;
+			}
+			return it;
+		}
+
+		iterator upper_bound(const value_type &k)
+		{
+			iterator it = begin();
+			node_ptr save;
+
+			while (it != end())
+			{
+				save = it.getCurrent();
+				if (_comp(k.first, save->data.first))
+					return it;
+				it++;
+			}
+			return it;
+		}
+
+		const_iterator upper_bound(const value_type &k) const
+		{
+			iterator it = begin();
+			node_ptr save;
+
+			while (it != end())
+			{
+				save = it.getCurrent();
+				if (_comp(k, save->data))
+					return it;
+				it++;
+			}
+			return it;
 		}
 
 		node_ptr	getFirts() const {return _first;}

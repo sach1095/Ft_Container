@@ -27,7 +27,7 @@ HEADER =	$(I)all.hpp \
 			$(I)is_integral.hpp \
 			$(I)lecxico_equal.hpp \
 			$(I)pair.hpp \
-			$(I)map_iterator.hpp \
+			$(I)map_tree.hpp \
 			$(I)map.hpp \
 			$(I)stack.hpp \
 			$(I)vector.hpp
@@ -56,7 +56,7 @@ $(NAME):	$(OBJS) $(HEADER)
 	@printf "\033[2K\r$(BLUE)$(NAME)$(RESET)$(BLUEE): $(ICONOK)Compiled [√]$(RESET)\n"
 
 start:
-		@make && time ./a.out
+		@make && ./a.out
 
 clean:
 	@$(RM) $(OBJS)

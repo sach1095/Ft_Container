@@ -69,7 +69,6 @@ void test_real_map(std::map<int, int> &realmap, uint64 *tab_key, uint64 *tab_val
 		realmap.insert(realmap.begin(), std::pair<int, int>(tab_key[i], tab_value[i]));
 	}
 
-	(void)tab_to_erase;
 	// test find and erase on 50 elements
 	std::map<int,int>::iterator it;
 	for (size_t i = 0; i < NB_TO_ERASE; i++)
@@ -116,7 +115,6 @@ void test_my_map(ft::map<int, int> &my_map, uint64 *tab_key, uint64 *tab_value, 
 	}
 }
 
-
 bool ft_map_speed_test()
 {
 	std::cout << "\033[3;33m------- \033[3;34mStart \033[3;32mMap Speed \033[3;35mTest \033[3;33m-------\033[0m\n" << std::endl;
@@ -152,11 +150,11 @@ bool ft_map_speed_test()
 	uint64 time_real_map = get_time() - start;
 	
 	start = get_time();
-	
+
 	test_my_map(my_map, tab_key, tab_value, tab_to_erase);
 	uint64 time_my_map = get_time() - start;
 
-	printf("test %.5f seconde and %.5f seconde.\n", (double)time_real_map ON_MILI, (double)time_my_map ON_MILI);
+	printf("test for %d inserts\n\nThe real map = %.5f seconde.\nMy map = %.5f seconde.\n\n", SIZE_TAB_INSERT ,(double)time_real_map ON_MILI, (double)time_my_map ON_MILI);
 
 	free(tab_key);
 	free(tab_value);

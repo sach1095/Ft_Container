@@ -177,14 +177,22 @@ namespace ft
 
 		size_type count (const key_type& k) const { return _map.count(ft::make_pair(k, mapped_type())); }
 
-		// iterator lower_bound (const key_type& k);
-		// const_iterator lower_bound (const key_type& k) const;
+		iterator lower_bound (const key_type& k) { return _map.lower_bound(ft::make_pair(k, mapped_type())); }
+		const_iterator lower_bound (const key_type& k) const { return _map.lower_bound(ft::make_pair(k, mapped_type())); }
 
-		// iterator upper_bound (const key_type& k);
-		// const_iterator upper_bound (const key_type& k) const;
-
-		// pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
-		// pair<iterator,iterator> equal_range (const key_type& k);
+		iterator upper_bound (const key_type& k) { return _map.upper_bound(ft::make_pair(k, mapped_type())); }
+		const_iterator upper_bound (const key_type& k) const { return _map.upper_bound(ft::make_pair(k, mapped_type())); }
+		
+		ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
+			const_iterator low = lower_bound(k);
+			const_iterator up = upper_bound(k);
+			return ft::make_pair(low, up);
+		}
+		ft::pair<iterator,iterator> equal_range (const key_type& k) {
+			iterator low = lower_bound(k);
+			iterator up = upper_bound(k);
+			return ft::make_pair(low, up);
+		}
 
 		/****************************************************************************************************************************/
 		/******************************************  Allocator **********************************************************************/
